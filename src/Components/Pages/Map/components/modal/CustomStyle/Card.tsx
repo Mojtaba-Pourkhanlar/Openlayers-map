@@ -13,9 +13,8 @@ export const Card = ({
 }: {
   name: string;
   list: {
-    id: number;
     name: string;
-    data: any;
+    value: any;
   }[];
 }) => {
   return (
@@ -25,8 +24,8 @@ export const Card = ({
         <div style={{ marginTop: "30px" }}>
           {list?.map((item, index) => (
             <div className="value" key={index}>
+              <div className="nameValue"></div>
               <div className="name">{item.name}</div>
-              <div className="nameValue">{item.data}</div>
             </div>
           ))}
         </div>

@@ -1,0 +1,436 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "UUID": "b531887d-55a2-4c91-aecb-2b031790383a",
+      "fullName": "نوید بیاتانی",
+      "timestamp": "2025-09-24T08:08:15Z",
+      "insertedPercent": 100,
+      "data": {
+        "features": [
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [51.35684955976922, 35.71252546095501]
+            },
+            "properties": {
+              "QRCode": "",
+              "code": "",
+              "customField": null,
+              "description": "",
+              "height": 0,
+              "name": "Point Notes-P1",
+              "qCodeGroup": null,
+              "qcode": 0,
+              "status": "insert",
+              "userId": 7075,
+              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
+              "version": 1
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [51.35578757226011, 35.71275834364855]
+            },
+            "properties": {
+              "QRCode": "",
+              "code": "",
+              "customField": null,
+              "description": "",
+              "height": 0,
+              "name": "Point Notes-P2",
+              "qCodeGroup": null,
+              "qcode": 0,
+              "status": "insert",
+              "userId": 7075,
+              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
+              "version": 1
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [51.35699222661642, 35.71133527657871]
+            },
+            "properties": {
+              "QRCode": "",
+              "code": "",
+              "customField": null,
+              "description": "",
+              "height": 0,
+              "name": "Point Notes-P3",
+              "qCodeGroup": null,
+              "qcode": 0,
+              "status": "insert",
+              "userId": 7075,
+              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
+              "version": 1
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [51.35617262426673, 35.71158938378489]
+            },
+            "properties": {
+              "QRCode": "",
+              "code": "",
+              "customField": null,
+              "description": "",
+              "height": 0,
+              "name": "Point Notes-P4",
+              "qCodeGroup": null,
+              "qcode": 0,
+              "status": "insert",
+              "userId": 7075,
+              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
+              "version": 1
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [51.35769068950089, 35.71088670639885]
+            },
+            "properties": {
+              "QRCode": "",
+              "code": "",
+              "customField": null,
+              "description": "",
+              "height": 0,
+              "name": "Point Notes-P5",
+              "qCodeGroup": null,
+              "qcode": 0,
+              "status": "insert",
+              "userId": 7075,
+              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
+              "version": 1
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [51.35601018814412, 35.70940519835764]
+            },
+            "properties": {
+              "QRCode": "",
+              "code": "",
+              "customField": null,
+              "description": "",
+              "height": 0,
+              "name": "Point Notes-P6",
+              "qCodeGroup": null,
+              "qcode": 0,
+              "status": "insert",
+              "userId": 7075,
+              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
+              "version": 1
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [51.3543828896244, 35.71017707911678]
+            },
+            "properties": {
+              "QRCode": "",
+              "code": "",
+              "customField": null,
+              "description": "",
+              "height": 0,
+              "name": "Point Notes-P7",
+              "qCodeGroup": null,
+              "qcode": 0,
+              "status": "insert",
+              "userId": 7075,
+              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
+              "version": 1
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [51.35461462620763, 35.71171633679929]
+            },
+            "properties": {
+              "QRCode": "",
+              "code": "",
+              "customField": null,
+              "description": "",
+              "height": 0,
+              "name": "Point Notes-P8",
+              "qCodeGroup": null,
+              "qcode": 0,
+              "status": "insert",
+              "userId": 7075,
+              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
+              "version": 1
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [51.35519259826986, 35.71047322453496]
+            },
+            "properties": {
+              "QRCode": "",
+              "code": "",
+              "customField": null,
+              "description": "",
+              "height": 0,
+              "name": "Point Notes-P9",
+              "qCodeGroup": null,
+              "qcode": 0,
+              "status": "insert",
+              "userId": 7075,
+              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
+              "version": 1
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [51.3561661237034, 35.71079643639196]
+            },
+            "properties": {
+              "QRCode": "",
+              "code": "",
+              "customField": null,
+              "description": "",
+              "height": 0,
+              "name": "Point Notes-P10",
+              "qCodeGroup": null,
+              "qcode": 0,
+              "status": "insert",
+              "userId": 7075,
+              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
+              "version": 1
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [51.35686402, 35.71252406]
+            },
+            "properties": {
+              "QRCode": "",
+              "code": "",
+              "customField": null,
+              "description": "",
+              "height": 1219.0074462890625,
+              "name": "stk-Point Notes-P1",
+              "qCodeGroup": null,
+              "qcode": 0,
+              "status": "insert",
+              "userId": 7075,
+              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
+              "version": 1
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [51.35579609, 35.71273864]
+            },
+            "properties": {
+              "QRCode": "",
+              "code": "",
+              "customField": null,
+              "description": "",
+              "height": 1219.0970458984375,
+              "name": "stk-Point Notes-P2",
+              "qCodeGroup": null,
+              "qcode": 0,
+              "status": "insert",
+              "userId": 7075,
+              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
+              "version": 1
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [51.35462804, 35.71169986]
+            },
+            "properties": {
+              "QRCode": "",
+              "code": "",
+              "customField": null,
+              "description": "بین پلاک ۱ و ۳ ، بین ملک دوم و سوم از راست",
+              "height": 1216.0096435546875,
+              "name": "stk-Point Notes-P8",
+              "qCodeGroup": null,
+              "qcode": 0,
+              "status": "insert",
+              "userId": 7075,
+              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
+              "version": 1
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [51.3561834, 35.71158807]
+            },
+            "properties": {
+              "QRCode": "",
+              "code": "",
+              "customField": null,
+              "description": "",
+              "height": 1216.2266845703125,
+              "name": "stk-Point Notes-P4",
+              "qCodeGroup": null,
+              "qcode": 0,
+              "status": "insert",
+              "userId": 7075,
+              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
+              "version": 1
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [51.3570018, 35.71133173]
+            },
+            "properties": {
+              "QRCode": "",
+              "code": "",
+              "customField": null,
+              "description": "",
+              "height": 1216.089111328125,
+              "name": "stk-Point Notes-P3",
+              "qCodeGroup": null,
+              "qcode": 0,
+              "status": "insert",
+              "userId": 7075,
+              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
+              "version": 1
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [51.35770787, 35.71087706]
+            },
+            "properties": {
+              "QRCode": "",
+              "code": "",
+              "customField": null,
+              "description": "",
+              "height": 1217.4228515625,
+              "name": "stk-Point Notes-P5",
+              "qCodeGroup": null,
+              "qcode": 0,
+              "status": "insert",
+              "userId": 7075,
+              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
+              "version": 1
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [51.35616352, 35.71079487]
+            },
+            "properties": {
+              "QRCode": "",
+              "code": "",
+              "customField": null,
+              "description": "",
+              "height": 1213.943603515625,
+              "name": "stk-Point Notes-P10",
+              "qCodeGroup": null,
+              "qcode": 0,
+              "status": "insert",
+              "userId": 7075,
+              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
+              "version": 1
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [51.35519806, 35.71046912]
+            },
+            "properties": {
+              "QRCode": "",
+              "code": "",
+              "customField": null,
+              "description": "کنار درخت در داخل کوچه بن بست",
+              "height": 1214.330322265625,
+              "name": "stk-Point Notes-P9",
+              "qCodeGroup": null,
+              "qcode": 0,
+              "status": "insert",
+              "userId": 7075,
+              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
+              "version": 1
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [51.35602074, 35.70940214]
+            },
+            "properties": {
+              "QRCode": "",
+              "code": "",
+              "customField": null,
+              "description": "",
+              "height": 1210.14599609375,
+              "name": "stk-Point Notes-P6",
+              "qCodeGroup": null,
+              "qcode": 0,
+              "status": "insert",
+              "userId": 7075,
+              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
+              "version": 1
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [51.35442919, 35.71009957]
+            },
+            "properties": {
+              "QRCode": "",
+              "code": "",
+              "customField": null,
+              "description": "موقعیت مشکوک",
+              "height": 1211.7884521484375,
+              "name": "stk-Point Notes-P7",
+              "qCodeGroup": null,
+              "qcode": 0,
+              "status": "insert",
+              "userId": 7075,
+              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
+              "version": 1
+            }
+          }
+        ],
+        "type": "FeatureCollection"
+      }
+    }
+  ]
+}

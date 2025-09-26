@@ -1,4 +1,3 @@
-import DateConverter from "@/Components/Common/Core/DateConverter";
 import Tooltip from "@/Components/Common/Core/Tooltip/Basic";
 import { getTranslate } from "@/language";
 import DateObject from "react-date-object";
@@ -987,23 +986,5 @@ export const groupData = (data: DataItem[]): GroupedData => {
     },
     {} as GroupedData
   );
-  return result;
-};
-
-let globalNavValue: any = null;
-let globalLatValue: any = null;
-let globalLonValue: any = null;
-
-export const customeName = ({ name, value }: { name: string; value: any }) => {
-  let result;
-  if (name === "Date and Time") {
-    result = <DateConverter date={value} /> ?? "___";
-  } else if (value === "") {
-    result = "__";
-  } else if (value === 0) {
-    result = 0;
-  } else {
-    result = value;
-  }
   return result;
 };

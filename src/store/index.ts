@@ -1,17 +1,11 @@
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 // Redux for components
-import RootReducer from "./Reducers/Root";
-import ProjetcReducer from "./Reducers/Projects";
-import ProfileReducer from "./Reducers/Profile";
 import MapReducer from "./Reducers/Map";
-import HistoryReducer from "./Reducers/History";
+import RootReducer from "./Reducers/Root";
 
 const reducer = combineReducers({
   root: RootReducer,
-  project: ProjetcReducer,
-  profile: ProfileReducer,
   map: MapReducer,
-  history: HistoryReducer,
 });
 
 export const store = configureStore({

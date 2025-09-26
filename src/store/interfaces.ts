@@ -45,48 +45,6 @@ export interface RootState {
     };
     getTableType: string;
   };
-  project: {
-    listLoading: boolean;
-    project_list: {
-      data: {
-        list: any[];
-        totalCount: number;
-      };
-    };
-    project_page_size: number;
-    project_page_index: number;
-    openproject: any;
-    route: string | null;
-    persistentRoute: boolean;
-    name: string;
-    getGuid: string;
-    id: string | undefined;
-    listUsers: {
-      data: [
-        {
-          ID: number;
-          ProjectID: number;
-          NationalId: string;
-          FullName: string;
-        }
-      ];
-    };
-    newUser: {
-      data: {
-        ID: number;
-        ProjectID: number;
-        NationalId: string;
-        FullName: string;
-      };
-    };
-  };
-  profile: {
-    loading: boolean;
-    signin: any;
-    captcha: any;
-    statusCode: number;
-    user: any;
-  };
   map: {
     listLoading: boolean;
     map_list: {
@@ -130,57 +88,6 @@ export interface RootState {
       };
     };
     map_list_search: string;
-  };
-  history: {
-    historyLoading: boolean;
-    historyList: {
-      data: {
-        list: [];
-        totalCount: number;
-      };
-    };
-    pageSize: number;
-    beforeIndex: number;
-    operation: string;
-    featureType: string;
-    isRedirect: boolean;
-    multiPointList: {
-      rowId: number;
-      status: string;
-      feature: {
-        properties: {
-          name: string;
-          fullName: string;
-          createAt: string;
-        };
-        geometry: {
-          coordinates: number[];
-          type: string;
-        };
-      };
-      FeatureAfter: {
-        properties: {
-          name: string;
-          fullName: string;
-          createAt: string;
-        };
-        geometry: {
-          coordinates: number[];
-          type: string;
-        };
-      };
-      featureBefore: {
-        properties: {
-          name: string;
-          fullName: string;
-          createAt: string;
-        };
-        geometry: {
-          coordinates: number[];
-          type: string;
-        };
-      };
-    };
   };
 }
 

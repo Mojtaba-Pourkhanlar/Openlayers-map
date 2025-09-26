@@ -68,8 +68,6 @@ import { getTranslate } from "@/language";
 import VectorLayer from "ol/layer/Vector";
 import { transform } from "ol/proj";
 import "./Hook/styleTest.css";
-import JsonViewer from "./components/JsonViewer/index";
-import PointDetail from "./components/modal/PointDetail";
 import "./components/style.css";
 
 const MapComponent = ({ pointData, utm }: MapProps) => {
@@ -643,8 +641,6 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
           }}
         />
       </MapContainer>
-
-      {modal.name === translate.pointDetailText && <PointDetail />}
     </>
   );
 };
