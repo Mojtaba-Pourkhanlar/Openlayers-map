@@ -1,0 +1,32 @@
+/* Custom styles for success toast */
+.toast-success {
+  background-color: #F0FAF8; /* Change the background color for success */
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+/* Custom styles for error toast */
+.toast-error {
+  background-color: #FBEFEF; /* Change the background color for error */
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+/* Custom styles for warning toast */
+.toast-warning {
+  background-color: #FFF8EB; /* Change the background color for warning */
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+/* Custom styles for info toast */
+.toast-info {
+  background-color: #F7FBFE; /* Change the background color for info */
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+.Toastify__toast-body{
+    display: flex;
+    align-items: start;
+}
