@@ -29,7 +29,6 @@ import {
   PropRectangle,
 } from "@/Interfaces";
 // Icons
-import yellow from "@/assets/png/marker/yellow.png";
 import locInit from "@/assets/png/pointPNG1.png";
 import { ReactComponent as Circle } from "@/assets/svg/circle.svg";
 import { ReactComponent as Cursor } from "@/assets/svg/cursor.svg";
@@ -51,12 +50,11 @@ import {
   Text,
 } from "ol/style";
 
-import { POINTICON, selectPoint } from "@/Constants";
+import { selectPoint } from "@/Constants";
 import {
   circleStyleD,
   defaultStyle,
   lineStyle,
-  pointNewStyle,
   pointStyle,
   polygonStyle,
 } from "../../Style";
@@ -207,85 +205,6 @@ const memoizedStyleFunction = ({
   return showStyle;
 };
 
-// History Map
-export const memoizedStyleHistoryMap = (
-  getPointData: {
-    features: any[];
-    type: string;
-  },
-  getPointStyle: any
-) => {
-  const showStyle = useMemo(() => {
-    return (feature: any) => {
-      const geometryType = feature.getGeometry()?.getType();
-      switch (geometryType) {
-        case "Point":
-          return [pointStyle(selectPoint[getPointStyle])];
-        case "LineString":
-          return [lineStyle];
-        case "Polygon":
-          return [polygonStyle];
-        case "Circle":
-          return [circleStyleD];
-        default:
-          return [];
-      }
-    };
-  }, [getPointData?.features, getPointStyle]);
-  return showStyle;
-};
-// Heat Map
-export const memoizedStyleHeatMap = ({
-  getPointData,
-  mapRef,
-}: {
-  getPointData: {
-    features: any[];
-    type: string;
-  };
-  mapRef: any;
-}) => {
-  const showStyle = useMemo(() => {
-    return (feature: any) => {
-      const zoomLevel = mapRef?.current?.getView().getZoom();
-      const featuresArray = feature.get("features");
-      const name = featuresArray
-        ? featuresArray[0]?.get("name")
-        : feature.get("name");
-      const status = feature.get("status");
-
-      if (zoomLevel > 15) {
-        return [
-          new Style({
-            image: new CircleStyle({
-              radius: 6,
-              fill: new Fill({ color: status }),
-            }),
-            text: new Text({
-              text: name,
-              offsetY: 15,
-              fill: new Fill({ color: "black" }),
-              stroke: new Stroke({ color: "white", width: 3 }),
-            }),
-          }),
-        ];
-      } else {
-        return [
-          new Style({
-            image: new CircleStyle({
-              radius: 6,
-              fill: new Fill({ color: status }),
-            }),
-          }),
-        ];
-      }
-    };
-  }, [getPointData]);
-
-  return showStyle;
-};
-
-//...................................................
 // Show drawings on the map
 const drawerData: DrawerDataItem[] = [
   { name: "Circle", icon: <Circle /> },
