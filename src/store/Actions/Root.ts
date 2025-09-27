@@ -1,5 +1,4 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
-import DateObject from "react-date-object";
 
 interface Modal {
   name: string;

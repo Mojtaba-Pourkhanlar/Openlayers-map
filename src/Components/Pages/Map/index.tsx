@@ -87,7 +87,7 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
   const rootState = useSelector((state: RootState) => state?.root);
   const mapData = useSelector((state: RootState) => state?.map);
   const { drawnFeaturesState } = mapData;
-  const { modal, selectedCheckboxes } = rootState;
+  const { selectedCheckboxes } = rootState;
   // All State
   const [selectedTileSource, setSelectedTileSource] = useState("streets");
   const [search, setSearch] = useState<string>("");
