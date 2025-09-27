@@ -50,12 +50,11 @@ import {
   Text,
 } from "ol/style";
 
-import { selectPoint } from "@/Constants";
 import {
   circleStyleD,
   defaultStyle,
   lineStyle,
-  pointStyle,
+  pointNewStyle,
   polygonStyle,
 } from "../../Style";
 import { tileSources } from "../components/Tiles";
@@ -1536,7 +1535,7 @@ export const resetPreviousSelectionStyles = ({
     let styleToSet;
     switch (geometryType) {
       case "Point":
-        styleToSet = pointStyle(selectPoint[getPointStyle]);
+        styleToSet = pointNewStyle;
         break;
       case "LineString":
         styleToSet = lineStyle;

@@ -3,7 +3,6 @@ import { BtnComponent } from "@/Components/Common/Core/Button";
 import Select from "@/Components/Common/Core/Input/Select";
 import TextFaild from "@/Components/Common/Core/Input/TextFaild";
 import Typography from "@/Components/Common/Core/Typography";
-import { selectPoint } from "@/Constants";
 import loc from "@/assets/png/newPoint.png";
 import { ReactComponent as Bottom } from "@/assets/svg/bottom.svg";
 import { ReactComponent as Menu } from "@/assets/svg/menu.svg";
@@ -17,7 +16,6 @@ const BoxTable = styled(Box)`
   @media (max-width: 1110px) {
     margin: -17px 0 0 0;
   }
-
 `;
 const BoxBtnTooltip = styled(Box)`
   display: flex;
@@ -58,44 +56,20 @@ export const defaultStyle = new Style({
   }),
 });
 
-const pointStyle = (icon: any) => {
-  const getPointStyle: string | any = localStorage.getItem("custom-point");
-  return new Style({
-    fill: new Fill({
-      color: "rgba(255, 176, 32, 0.5)",
-    }),
-    stroke: new Stroke({
-      color: "#FFB020",
-      width: 3,
-    }),
-    image: new CircleStyle({
-      radius: 7,
-      fill: new Fill({ color: "#FFB020" }),
-      stroke: new Stroke({ color: "black", width: 1 }),
-    }),
-  });
-};
-
-const pointStyleCustom = ({ isType }: { isType: boolean }) => {
-  return new Style({
-    stroke: new Stroke({
-      color: "#ff8420",
-      width: 2,
-    }),
-    fill: new Fill({
-      color: "rgba(90, 152, 219, 0.8)",
-    }),
-    image: new CircleStyle({
-      radius: 5,
-      stroke: new Stroke({
-        color: isType ? "#ff2020" : "#00ff2a",
-      }),
-      fill: new Fill({
-        color: isType ? "#ff2020" : "#00ff2a",
-      }),
-    }),
-  });
-};
+const pointStyle = new Style({
+  fill: new Fill({
+    color: "rgba(255, 176, 32, 0.5)",
+  }),
+  stroke: new Stroke({
+    color: "#FFB020",
+    width: 3,
+  }),
+  image: new CircleStyle({
+    radius: 7,
+    fill: new Fill({ color: "#FFB020" }),
+    stroke: new Stroke({ color: "black", width: 1 }),
+  }),
+});
 
 const lineStyle = new Style({
   stroke: new Stroke({
@@ -106,6 +80,7 @@ const lineStyle = new Style({
     color: "rgba(90, 152, 219, 0.1)",
   }),
 });
+
 const pointNewStyle = new Style({
   image: new CircleStyle({
     radius: 5,
@@ -1162,6 +1137,7 @@ export {
   BoxBTNGroup,
   BoxBTNSec,
   BoxBTNSecXS,
+  BoxBtnTooltip,
   BoxClose,
   BoxContainer,
   BoxDrawerActive,
@@ -1216,7 +1192,6 @@ export {
   Plus,
   pointNewStyle,
   pointStyle,
-  pointStyleCustom,
   polygonStyle,
   SearchInput,
   ShowAlertStyle,
@@ -1229,5 +1204,4 @@ export {
   TextStyle,
   TextTile,
   TileStyle,
-  BoxBtnTooltip,
 };
