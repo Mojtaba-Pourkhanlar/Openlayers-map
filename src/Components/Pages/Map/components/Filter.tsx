@@ -31,7 +31,7 @@ interface Filter {
   drawnFeaturesState: any[];
   setPointData: (getPointData: any) => void;
   utm: any;
-  // setIsTest: any;
+  setIsTest: any;
   sourceDrawnRef: any;
   sourceServerRef: any;
   isEditMode: any;
@@ -47,7 +47,7 @@ const Filter = ({
   drawnFeaturesState,
   setPointData,
   utm,
-  // setIsTest,
+  setIsTest,
   sourceDrawnRef,
   sourceServerRef,
   isEditMode,
@@ -64,12 +64,12 @@ const Filter = ({
       };
       setPointData(updatedPointData);
       dispatch(clearDrawnFeatures());
-      // setIsTest(true);
+      setIsTest(true);
       sourceDrawnRef?.current?.clear();
       // Add base layer
       const features = showData(updatedPointData, utm);
       sourceServerRef.current?.addFeatures(features);
-      // setIsTest(false);
+      setIsTest(false);
     }
     setLayers((prevLayers: any) =>
       prevLayers.map((layer: any) =>

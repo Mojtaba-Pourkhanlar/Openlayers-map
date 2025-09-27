@@ -121,6 +121,64 @@ const MapContainer = styled(Box)<{ $openJson: boolean }>`
   }
 `;
 
+const DivLocation = styled(Box)`
+  #current-location-con {
+    position: absolute;
+    bottom: 112px;
+    left: 16px;
+    z-index: 1;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & > div > svg {
+      width: 30px;
+      height: 30px;
+      & > path {
+        fill: #0b233f;
+      }
+    }
+
+    & > div {
+      margin: 0 0 0px 0;
+      padding: 0;
+
+      & > span > div > svg {
+        width: 30px;
+        height: 30px;
+        & > path {
+          fill: #0b233f;
+        }
+      }
+    }
+  }
+  #meatrue-con {
+    position: absolute;
+    bottom: 65px;
+    left: 16px;
+    z-index: 1;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    & > div {
+      margin: 0 0 -10px 0;
+      padding: 0;
+    }
+  }
+`;
+
 export {
   styles,
   Lable,
@@ -132,4 +190,5 @@ export {
   BoxItemsLable,
   EditBax,
   MapContainer,
+  DivLocation,
 };

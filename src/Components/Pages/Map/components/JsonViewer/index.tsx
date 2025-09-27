@@ -1,26 +1,24 @@
-import { UnControlled as CodeMirror } from "react-codemirror2";
-import { useDispatch, useSelector } from "react-redux";
-import { BoxShowJson } from "../../../Style";
-import { RootState } from "@/store/interfaces";
-import { useEffect, useRef, useState } from "react";
-import Copy from "./Copy";
-import Download from "./Download";
 import { openSnackbar } from "@/store/Actions/Root";
-import "codemirror/lib/codemirror.css";
-import "codemirror/theme/material.css";
-import "codemirror/mode/javascript/javascript"; // Ensure JSON mode is included
-import "codemirror/addon/fold/foldgutter.css"; // Style for the gutter
-import "codemirror/addon/fold/foldgutter"; // Enables folding gutter
-import "codemirror/addon/fold/foldcode"; // Code folding core
 import "codemirror/addon/fold/brace-fold"; // Braces folding
 import "codemirror/addon/fold/comment-fold"; // Comment folding
+import "codemirror/addon/fold/foldcode"; // Code folding core
+import "codemirror/addon/fold/foldgutter"; // Enables folding gutter
+import "codemirror/addon/fold/foldgutter.css"; // Style for the gutter
+import "codemirror/lib/codemirror.css";
+import "codemirror/mode/javascript/javascript"; // Ensure JSON mode is included
+import "codemirror/theme/material.css";
+import { useEffect, useRef, useState } from "react";
+import { UnControlled as CodeMirror } from "react-codemirror2";
+import { useDispatch } from "react-redux";
+import { BoxShowJson } from "../../../Style";
+import Copy from "./Copy";
+import Download from "./Download";
 
 const JsonViewer = ({ isShow, jsonData, setPointData, selected }: any) => {
   const dispatch = useDispatch();
   const [showCopy, setShowCopy] = useState(false);
   const codeMirrorRef: any = useRef(null);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null); // Timeout reference
-  const { name } = useSelector((state: RootState) => state?.project);
   const [marker, setMarker] = useState<any>(null);
 
   const getPropertiesName = selected?.getProperties().name;
@@ -144,7 +142,7 @@ const JsonViewer = ({ isShow, jsonData, setPointData, selected }: any) => {
     >
       {/* استفاده از کامپوننت‌های جدا شده */}
       <Copy jsonData={jsonData} show={showCopy} />
-      <Download jsonData={jsonData} name={name} show={showCopy} />
+      <Download jsonData={jsonData} name={"download"} show={showCopy} />
 
       <CodeMirror
         ref={codeMirrorRef}

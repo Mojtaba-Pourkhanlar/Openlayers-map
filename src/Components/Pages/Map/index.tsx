@@ -16,10 +16,10 @@ import {
   addMapClickHandler,
   cleanupMap,
   clickHandlerRectangle,
-  // drawerData,
+  drawerData,
   handleConvertToWGS84Drawer,
-  // handleDeleteSelectedFeature,
-  // handleGeometryTypeChange,
+  handleDeleteSelectedFeature,
+  handleGeometryTypeChange,
   highlightedStyle,
   initializeMap,
   memoizedStyleFunction,
@@ -42,7 +42,7 @@ import { CountersState, MapLayer, MapProps } from "@/Interfaces";
 import { RootState } from "@/store/interfaces";
 // Icon
 import { ReactComponent as Line } from "@/assets/svg/line.svg";
-import { ReactComponent as CurLocation } from "@/assets/svg/mapIcon/current-location.svg";
+import { ReactComponent as CurLocation } from "@/assets/svg/mapIcon/3d-viewer.svg";
 import { ReactComponent as MeatrueIcon } from "@/assets/svg/mapIcon/meature.svg";
 import { ReactComponent as Point } from "@/assets/svg/point.svg";
 import { ReactComponent as Polygon } from "@/assets/svg/polygon.svg";
@@ -61,7 +61,7 @@ import {
   LayerStyle,
   MapBox,
 } from "../Style";
-import { MapContainer, styles } from "./Style";
+import { DivLocation, MapContainer, styles } from "./Style";
 import "./components/style.css";
 // Language
 import { getTranslate } from "@/language";
@@ -69,10 +69,10 @@ import VectorLayer from "ol/layer/Vector";
 import { transform } from "ol/proj";
 import "./Hook/styleTest.css";
 import "./components/style.css";
+import JsonViewer from "./components/JsonViewer";
+import { Control } from "./components/Control";
 
 const MapComponent = ({ pointData, utm }: MapProps) => {
-  // Language
-  const translate = getTranslate();
   // Map Ref
   const mapRef: any = useRef<Map | null>(null);
   const drawRef = useRef<Draw | null>(null);
@@ -93,7 +93,7 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
   const [search, setSearch] = useState<string>("");
   const [drawer, setDrawer] = useState<string>("");
   const [openSearch, setOpenSearch] = useState(false);
-  // const [showLayers, setShowLayers] = useState<boolean>(false);
+  const [showLayers, setShowLayers] = useState<boolean>(false);
   const [fullScreen, setFullScreen] = useState(false);
   const [isChecked] = useState<boolean>(false);
   const [state, setState] = useState<{ selectedGeometryType: string }>({
@@ -110,7 +110,7 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
   });
   const [popupVisible, setPopupVisible] = useState<boolean>(false);
   const [popupContent, setPopupContent] = useState<any>(null);
-  // const [popupCoordinate, setPopupCoordinate] = useState([]);
+  const [popupCoordinate, setPopupCoordinate] = useState([]);
   const [circlePoints, setCirclePoints] = useState<number[][]>([]);
   const [arcPoints, setArcPoints] = useState<number[][]>([]);
   const [, setRectAngle] = useState<any>([]);
@@ -118,8 +118,8 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
   // Open Filter
   const [open, setOpen] = useState(false);
   // Open Custome Style
-  // const [isOpen, setIsOpen] = useState(false);
-  // const [pointName, setPointName] = useState("point5");
+  const [isOpen, setIsOpen] = useState(false);
+  const [pointName, setPointName] = useState("point5");
   // Filter Coordinate
   const [layers, setLayers] = useState<MapLayer[]>([
     { icon: <Point />, name: "Point", id: 2, active: true },
@@ -147,12 +147,12 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
   }>(pointData);
   // Delete
   const [isDelete, setIsDelete] = useState<boolean>(false);
-  // const [isTest, setIsTest] = useState<boolean>(false);
+  const [isTest, setIsTest] = useState<boolean>(false);
   const [getradius, setRadius] = useState<string>("65");
   const [radiusThree, setRadiusThree] = useState<string>("65");
   // change style
-  //   const [isChange, setIsChange] = useState<boolean>(false);
-  // const [ShowGeojson, setShowGeojson] = useState<boolean>(false);
+  const [isChange, setIsChange] = useState<boolean>(false);
+  const [ShowGeojson, setShowGeojson] = useState<boolean>(false);
   const [activeMeasure, setActiveMeature] = useState(false);
 
   let test = true;
@@ -225,7 +225,7 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
     setDrawer("");
     setActiveMeature(false);
     setPopupVisible(false);
-    // setIsOpen(false);
+    setIsOpen(false);
     setState((prevState: any) => ({
       ...prevState,
       selectedGeometryType: "None",
@@ -254,7 +254,7 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
     utm,
     setDrawer,
     selectedCheckboxes,
-    // setShowLayers,
+    setShowLayers,
     getradius,
     test,
   });
@@ -457,7 +457,7 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
       setSearch("");
       setDrawer("");
       setOpenSearch(false);
-      // setShowLayers(false);
+      setShowLayers(false);
       setFullScreen(false);
       setState({
         selectedGeometryType: "None",
@@ -473,7 +473,7 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
       });
       setPopupVisible(false);
       setPopupContent(null);
-      // setPopupCoordinate([]);
+      setPopupCoordinate([]);
       setCirclePoints([]);
       setArcPoints([]);
       setRectAngle([]);
@@ -486,10 +486,10 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
       setSelectedName(null);
       setPointData(pointData?.features);
       setIsDelete(false);
-      // setIsTest(false);
+      setIsTest(false);
       setRadius("65");
       setRadiusThree("65");
-      // setIsChange(false);
+      setIsChange(false);
     };
   }, []);
 
@@ -508,12 +508,12 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
   return (
     <>
       <MapContainer $openJson={false}>
-        {/* <JsonViewer
+        <JsonViewer
           isShow={ShowGeojson}
           jsonData={getPointData}
           setPointData={setPointData}
           selected={selectedFeature}
-        /> */}
+        />
         <MapBox
           id="map"
           open={fullScreen}
@@ -531,7 +531,7 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
                   drawnFeaturesState={drawnFeaturesState}
                   setPointData={setPointData}
                   utm={utm}
-                  // setIsTest={setIsTest}
+                  setIsTest={setIsTest}
                   sourceDrawnRef={sourceDrawnRef}
                   sourceServerRef={sourceServerRef}
                   isEditMode={isEditMode}
@@ -583,63 +583,58 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
               )}
             </InputTextSearch>
           </BoxInputContainerSMNEW>
-          <CRNLocation
-            onClick={() => {
-              useUTMHandler(utm, mapRef?.current, getPointData?.features, true);
-              closeHandler();
-            }}
-          >
+
+          <DivLocation>
             <div
-              style={{
-                border: "1.5px solid black",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: "8px",
+              id="current-location-con"
+              onClick={() => {
+                useUTMHandler(
+                  utm,
+                  mapRef?.current,
+                  getPointData?.features,
+                  true
+                );
+                closeHandler();
               }}
             >
-              <CurLocation
-                style={{
-                  padding: "2px",
-                }}
-              />
+              <div className="current-location">
+                <CurLocation
+                  style={{
+                    padding: "2px",
+                  }}
+                />
+              </div>
             </div>
-          </CRNLocation>
 
-          <CRNLocation
-            onClick={() => {
-              setPopupVisible(false);
-              closeHandler();
-              setTimeout(() => {
-                setActiveMeature(!activeMeasure);
-              }, 100);
-            }}
-            onDoubleClick={() => {
-              console.log("");
-            }}
-            style={{
-              bottom: "30px",
-              background: activeMeasure ? "#66bb6a" : "",
-            }}
-          >
-            <MeatrueIcon />
-          </CRNLocation>
+            <div
+              id="meatrue-con"
+              onClick={() => {
+                setPopupVisible(false);
+                closeHandler();
+                setTimeout(() => {
+                  setActiveMeature(!activeMeasure);
+                }, 100);
+              }}
+              onDoubleClick={() => {
+                console.log("");
+              }}
+              style={{
+                background: activeMeasure ? "#66bb6a" : "#fff",
+              }}
+            >
+              <MeatrueIcon />
+            </div>
+          </DivLocation>
+          <Control
+            fullScreen={fullScreen}
+            setFullScreen={setFullScreen}
+            mapRef={mapRef}
+          />
 
           {popupVisible && (
             <Popup content={popupContent} open={open} utm={utm} />
           )}
         </MapBox>
-
-        <div
-          ref={popupRef}
-          style={{
-            background: "#fff",
-            borderRadius: "8px 8px 8px 0",
-            pointerEvents: "auto",
-            zIndex: 1,
-            transform: "translate(-80vw, -40vw)",
-          }}
-        />
       </MapContainer>
     </>
   );

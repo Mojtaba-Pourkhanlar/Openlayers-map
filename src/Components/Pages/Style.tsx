@@ -301,8 +301,8 @@ const BottomIcon = styled(Bottom)`
   }
 `;
 const BoxIconMap = styled(Box)`
-  width: 216px;
-  height: 48px;
+  width: 200px;
+  height: 40px;
   border-radius: 24px;
   background: ${({ theme }) => theme.palette.neutral[0]};
   box-shadow: 0px 4px 13px 0px rgba(0, 0, 0, 0.25);
@@ -315,6 +315,7 @@ const BoxIconMap = styled(Box)`
   z-index: 100;
   padding: 0 16px;
   cursor: pointer;
+  user-select: none;
 
   @media (max-width: 600px) {
     width: 160px;
