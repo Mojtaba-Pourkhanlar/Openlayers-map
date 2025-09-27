@@ -82,6 +82,8 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
   const vectorLayerRef = useRef<VectorLayer<VectorSource> | null>(null);
   const clusterRef = useRef<Cluster | any>(null); // Dynamic clusters
   const selectedFeatureRef = useRef<any>(null);
+  const prevStylesRef = useRef(new window.Map<any, any>());
+
   // redux
   const dispatch = useDispatch();
   const rootState = useSelector((state: RootState) => state?.root);
@@ -189,13 +191,25 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
     useUTMHandler(utm, mapRef?.current, getPointData?.features, true);
     return () => cleanupMap(mapRef); // Cleaning function
   }, [mapRef, tileSources, selectedTileSource, utm]);
+
   useEffect(() => {
-    if (selectedName === null) {
-      if (selectedFeatureRef.current) {
-        selectedFeatureRef.current.setStyle(null);
-      }
-    }
-  }, [selectedName]);
+    if (!sourceServerRef.current || !clusterRef.current) return;
+    const features = showData(getPointData, utm);
+    const filtered = features.filter((f: any) => {
+      const geometryType = f.getGeometry().getType();
+      const layer = layers.find(
+        (l: any) => l.name.toLowerCase() === geometryType.toLowerCase()
+      );
+      return layer?.active;
+    });
+    sourceServerRef.current.clear();
+    sourceServerRef.current.addFeatures(filtered);
+    const clusterSource = clusterRef.current.getSource();
+    clusterSource.clear();
+    clusterSource.addFeatures(filtered);
+    clusterRef.current.changed();
+    vectorLayerRef.current?.changed();
+  }, [layers, getPointData, utm]);
 
   useAddMeasureInteraction({
     drawRef,
@@ -406,46 +420,69 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
   };
 
   // Searching the value written in search input
-  const handleSearch = (e: any) => {
-    if (e.key === "Enter" && search) {
-      const filteredPointData = getPointData?.features?.filter(
-        (featureData: any) => featureData.properties.name.includes(search)
-      );
-      if (filteredPointData.length > 0) {
-        const firstCoordinate = filteredPointData[0];
-        const [longitude, latitude] = firstCoordinate.geometry.coordinates;
-        const name = search;
-        mapRef.current?.getView().animate({
-          center: transform([longitude, latitude], "EPSG:4326", utm),
-          zoom: 23,
-          duration: 500,
-        });
-        const feature = mapRef.current
-          ?.getLayers()
-          .getArray()
-          .reduce((acc: any, layer: any) => {
-            if (layer.getSource && layer.getSource().getFeatures) {
-              const features = layer.getSource().getFeatures();
-              return acc.concat(features);
-            }
-            return acc;
-          }, [])
-          .find((f: any) => f.get("name") === name);
-        if (feature) {
-          feature.setStyle(highlightedStyle);
-        }
-      }
-    }
+  const normalize = (s: string) => (s ?? "").toString().trim().toLowerCase();
+  const getRealFeature = (f: any) => {
+    const inner = f?.get?.("features");
+    return Array.isArray(inner) && inner.length ? inner[0] : f;
+  };
+  const getAllFeaturesFromMap = (map: any) => {
+    const layers = map?.getLayers?.().getArray?.() ?? [];
+    const feats: any[] = [];
+    layers.forEach((ly: any) => {
+      const src = ly?.getSource?.();
+      const lyFeatures = src?.getFeatures?.();
+      if (Array.isArray(lyFeatures)) feats.push(...lyFeatures);
+    });
+    return feats;
+  };
+  const clearPreviousHighlights = () => {
+    prevStylesRef.current.forEach((style: any, feat: any) => {
+      const real = getRealFeature(feat);
+      real.setStyle(style ?? null);
+    });
+    prevStylesRef.current.clear();
   };
 
-  // Resetting the map after deleting the searched item
-  const handleChange = (e: any) => {
-    setSearch(e.target.value);
-    if (e.target.value === "") {
-      mapRef.current?.getView().animate({
+  const handleSearch = (e: any) => {
+    if (e.key !== "Enter" || !search) return;
+    const q = normalize(search);
+    clearPreviousHighlights();
+    const map = mapRef.current;
+    if (!map) return;
+    const allFeatures = getAllFeaturesFromMap(map);
+    const matches = allFeatures.map(getRealFeature).filter((f) => {
+      const n = normalize(f.get("name"));
+      return n === q || (q.length >= 2 && n.includes(q));
+    });
+    if (matches.length === 0) return;
+    const geom = matches[0].getGeometry();
+    if (geom?.getType?.() === "Point") {
+      let coords = geom.getCoordinates();
+      const viewProj = map.getView().getProjection().getCode();
+      if (utm === "EPSG:32639" && viewProj === "EPSG:3857") {
+        coords = transform(coords, "EPSG:32639", "EPSG:3857");
+      }
+      map.getView().animate({
+        center: coords,
+        zoom: 23,
         duration: 500,
       });
-      handleEscape();
+    }
+    matches.forEach((feat) => {
+      if (!prevStylesRef.current.has(feat)) {
+        prevStylesRef.current.set(feat, feat.getStyle?.() ?? null);
+      }
+      feat.setStyle(highlightedStyle);
+    });
+  };
+
+  const handleChange = (e: any) => {
+    const val = e.target.value;
+    setSearch(val);
+    if (val === "") {
+      mapRef.current?.getView().animate({ duration: 500 });
+      clearPreviousHighlights();
+      handleEscape?.();
     }
   };
 
@@ -504,7 +541,7 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
       selectedGeometryType: "None",
     }));
   };
-
+  
   return (
     <>
       <MapContainer $openJson={false}>
@@ -531,7 +568,6 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
                   drawnFeaturesState={drawnFeaturesState}
                   setPointData={setPointData}
                   utm={utm}
-                  setIsTest={setIsTest}
                   sourceDrawnRef={sourceDrawnRef}
                   sourceServerRef={sourceServerRef}
                   isEditMode={isEditMode}

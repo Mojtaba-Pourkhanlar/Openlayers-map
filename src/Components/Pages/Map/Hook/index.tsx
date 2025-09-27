@@ -50,16 +50,11 @@ import {
   Text,
 } from "ol/style";
 
-import {
-  circleStyleD,
-  defaultStyle,
-  lineStyle,
-  pointNewStyle,
-  polygonStyle,
-} from "../../Style";
+import { circleStyleD, defaultStyle, pointNewStyle } from "../../Style";
 import { tileSources } from "../components/Tiles";
 import { handleDeleteSelectedFeatureProps, modifyEndProps } from "./interface";
 import "./styleTest.css";
+import { getLength as getSphereLength } from "ol/sphere";
 
 export const modifyStyle = new Style({
   image: new CircleStyle({
@@ -86,6 +81,100 @@ export const modifyStyle = new Style({
   }),
 });
 
+const DEFAULT_RADIUS_PX = 50;
+function makeOffsetGeometryFunction(
+  map: any,
+  index: number,
+  total: number,
+  center: [number, number],
+  radiusPx: number = DEFAULT_RADIUS_PX
+) {
+  return (_feat: any) => {
+    const res = map.getView().getResolution();
+    const radius = radiusPx * res;
+    const angleStep = (2 * Math.PI) / total;
+    const angle = index * angleStep;
+    const dx = radius * Math.cos(angle);
+    const dy = radius * Math.sin(angle);
+    return new PointGeom([center[0] + dx, center[1] + dy]);
+  };
+}
+
+const highlightedStyleFactory = (pointName: string): Style => {
+  return new Style({
+    image: new CircleStyle({
+      radius: 7,
+      fill: new Fill({ color: "#FFB020" }),
+      stroke: new Stroke({ color: "black", width: 1 }),
+    }),
+    text: new Text({
+      text: pointName,
+      offsetY: 15,
+      fill: new Fill({ color: "black" }),
+      stroke: new Stroke({ color: "white", width: 3 }),
+    }),
+    stroke: new Stroke({ color: "#FFB020", width: 3 }),
+    fill: new Fill({ color: "rgba(255, 176, 32, 0.5)" }),
+  });
+};
+
+const highlightedStyleFactoryNEW = (
+  pointName: string,
+  geomFunc?: (f: any) => any
+): Style => {
+  return new Style({
+    geometry: geomFunc, // اگر تعریف شده باشه جایگزین Geometry اصلی میشه
+    image: new CircleStyle({
+      radius: 7,
+      fill: new Fill({ color: "#FFB020" }),
+      stroke: new Stroke({ color: "black", width: 1 }),
+    }),
+    text: new Text({
+      text: pointName,
+      offsetY: 15,
+      fill: new Fill({ color: "black" }),
+      stroke: new Stroke({ color: "white", width: 3 }),
+    }),
+    stroke: new Stroke({ color: "#FFB020", width: 3 }),
+    fill: new Fill({ color: "rgba(255, 176, 32, 0.5)" }),
+  });
+};
+
+const lineStyle = (feature: any) =>
+  new Style({
+    stroke: new Stroke({
+      color: "#5AC4B4",
+      width: 3,
+    }),
+    fill: new Fill({
+      color: "rgba(90, 152, 219, 0.1)",
+    }),
+    text: new Text({
+      text: feature.get("name") || "",
+      font: "12px Calibri,sans-serif",
+      fill: new Fill({ color: "black" }),
+      stroke: new Stroke({ color: "white", width: 3 }),
+      placement: "line",
+    }),
+  });
+
+const polygonStyle = (feature: any) =>
+  new Style({
+    fill: new Fill({
+      color: "rgba(90, 152, 219, 0.1)",
+    }),
+    stroke: new Stroke({
+      color: "#2094FF",
+      width: 2,
+    }),
+    text: new Text({
+      text: feature.get("name") || "",
+      font: "12px Calibri,sans-serif",
+      fill: new Fill({ color: "black" }),
+      stroke: new Stroke({ color: "white", width: 3 }),
+    }),
+  });
+
 // Style clicked coordinates to display popup
 export const highlightedStyle = new Style({
   fill: new Fill({
@@ -102,12 +191,14 @@ export const highlightedStyle = new Style({
     // anchor: [0.5, 0.8],
   }),
 });
+
 // Coordinate style function
 const memoizedStyleFunction = ({
   layers,
   mapRef,
   selectedName,
   clusterRef,
+  selectedFeatureRef,
 }: any) => {
   const showStyle = useMemo(() => {
     return (feature: any) => {
@@ -122,85 +213,99 @@ const memoizedStyleFunction = ({
       const layer = layers.find(
         (l: any) => l.name.toLowerCase() === geometryType?.toLowerCase()
       );
+      if (!layer || !layer.active) return [];
+
       if (zoomLevel > 12 && zoomLevel <= 15) {
         clusterRef.current.setDistance(60);
       } else if (zoomLevel > 15 && zoomLevel < 18) {
         clusterRef.current.setDistance(30);
-      } else if (zoomLevel > 18) {
+      } else if (zoomLevel > 18 && zoomLevel < 24) {
         clusterRef.current.setDistance(5);
       } else if (zoomLevel > 24) {
         clusterRef.current.setDistance(0);
       }
-      // Exit if layer is not active
-      if (!layer || !layer.active) return [];
-      // Point style
+      // if (!layer || !layer.active) return [];
       if (geometryType === "Point") {
-        if (zoomLevel > 10) {
-          // High zoom level styles
-          if (featuresArray && featuresArray.length > 0) {
-            // Display name for clustered points
-            if (size === 1) {
-              const originalFeatureName = featuresArray[0]?.get("name");
-              return new Style({
-                image: new CircleStyle({
-                  radius: 5,
-                  stroke: new Stroke({
-                    color: "rgba(0, 0, 0)",
-                  }),
-                  fill: new Fill({
-                    color: "rgba(0, 0, 0)",
-                  }),
+        if (featuresArray && featuresArray.length > 0) {
+          if (size === 1) {
+            const originalFeatureName = featuresArray[0]?.get("name");
+            return new Style({
+              image: new CircleStyle({
+                radius: 7,
+                stroke: new Stroke({
+                  color: "rgba(0, 0, 0)",
                 }),
-                text: new Text({
-                  text: originalFeatureName,
-                  offsetY: 15,
-                  fill: new Fill({ color: "black" }),
-                  stroke: new Stroke({ color: "white", width: 3 }),
+                fill: new Fill({
+                  color: "rgba(0, 0, 0)",
                 }),
-              });
-            } else {
-              return new Style({
-                image: new CircleStyle({
-                  radius: Math.min(20, size + 10),
-                  fill: new Fill({ color: "rgba(0, 0, 0)" }),
-                  stroke: new Stroke({ color: "black", width: 1 }),
-                }),
-                text: new Text({
-                  text: size.toString(),
-                  fill: new Fill({ color: "white" }),
-                }),
-              });
-            }
+              }),
+              text: new Text({
+                text: originalFeatureName,
+                offsetY: 15,
+                fill: new Fill({ color: "black" }),
+                stroke: new Stroke({ color: "white", width: 3 }),
+              }),
+            });
           }
-        } else if (size > 1) {
-          // Low zoom level clustered point style
-          return new Style({
-            image: new CircleStyle({
-              radius: Math.min(20, size + 10),
-              fill: new Fill({ color: "rgba(0, 0, 0)" }),
-              stroke: new Stroke({ color: "black", width: 1 }),
-            }),
-            text: new Text({
-              text: size.toString(),
-              fill: new Fill({ color: "white" }),
-            }),
-          });
+          if (zoomLevel > 22) {
+            const center = feature.getGeometry().getCoordinates();
+            const styles: Style[] = featuresArray.map((f: any, i: number) => {
+              const geomFunc = makeOffsetGeometryFunction(
+                mapRef.current,
+                i,
+                featuresArray.length,
+                center
+              );
+              const isPicked =
+                f?.values_?.properties?.id_ray_db ===
+                selectedFeatureRef.current?.values_?.properties?.id_ray_db;
+              return isPicked
+                ? highlightedStyleFactoryNEW(f.get("name"), geomFunc)
+                : new Style({
+                    geometry: geomFunc,
+                    image: new CircleStyle({
+                      radius: 7,
+                      fill: new Fill({ color: "rgba(0, 0, 0)" }),
+                      stroke: new Stroke({ color: "black", width: 1 }),
+                    }),
+                    text: new Text({
+                      text: f.get("name"),
+                      offsetY: 15,
+                      fill: new Fill({ color: "black" }),
+                      stroke: new Stroke({ color: "white", width: 3 }),
+                    }),
+                  });
+            });
+            return styles;
+          } else {
+            return new Style({
+              image: new CircleStyle({
+                radius: Math.min(20, size + 10),
+                fill: new Fill({ color: "rgba(0, 0, 0)" }),
+                stroke: new Stroke({ color: "black", width: 1 }),
+              }),
+              text: new Text({
+                text: size.toString(),
+                fill: new Fill({ color: "white" }),
+              }),
+            });
+          }
         }
-        return []; // Single point without name
+        return [];
       }
       // Non-point geometry styles
       switch (geometryType) {
         case "LineString":
-          return [isSelected ? highlightedStyle : lineStyle];
+          return [isSelected ? highlightedStyle : lineStyle(feature)];
         case "Polygon":
-          return [isSelected ? highlightedStyle : polygonStyle];
+          return [isSelected ? highlightedStyle : polygonStyle(feature)];
         case "Circle":
           return [isSelected ? highlightedStyle : circleStyleD];
         default:
           return [];
       }
     };
-  }, [layers, mapRef, selectedName, clusterRef]);
+  }, [layers, mapRef, selectedName, clusterRef, selectedFeatureRef]);
   return showStyle;
 };
 
@@ -815,33 +920,93 @@ const handleGeometryTypeChange = (
   }
 };
 
+function pickNearestSubFeatureFromExpandedCluster(
+  evt: any,
+  map: any,
+  clusterFeature: any
+) {
+  const subs: any[] = clusterFeature.get("features") || [];
+  if (!subs.length) return null;
+
+  const center: [number, number] = clusterFeature
+    .getGeometry()
+    .getCoordinates();
+  const res = map.getView().getResolution();
+  const radiusPx = 50;
+  const radius = radiusPx * res;
+
+  let bestIdx = 0;
+  let bestDist = Infinity;
+
+  for (let i = 0; i < subs.length; i++) {
+    const angle = (2 * Math.PI * i) / subs.length;
+    const coord: [number, number] = [
+      center[0] + radius * Math.cos(angle),
+      center[1] + radius * Math.sin(angle),
+    ];
+    const pix = map.getPixelFromCoordinate(coord);
+    const d = Math.hypot(pix[0] - evt.pixel[0], pix[1] - evt.pixel[1]);
+    if (d < bestDist) {
+      bestDist = d;
+      bestIdx = i;
+    }
+  }
+
+  return subs[bestIdx] || null;
+}
+
 // Add the click event to the map in a standalone function
 export const addMapClickHandler = ({
   mapRef,
   setPopupVisible,
   setPopupContent,
-  // setPopupCoordinate,
-  // setIsChange,
-  sourceServerRef,
   vectorLayerRef,
-  layers,
   setSelectedName,
-  utm,
   selectedFeatureRef,
 }: HandleMapClickProps) => {
   if (mapRef.current) {
     mapRef.current.on("click", (event) => {
-      mapRef.current?.forEachFeatureAtPixel(event.pixel, function (feature) {
+      mapRef.current?.forEachFeatureAtPixel(event.pixel, (feature: any) => {
         const clusteredFeatures = feature.get("features");
-        if (clusteredFeatures !== undefined && clusteredFeatures.length > 1) {
-          // Zoom to cluster
+        const zoomLevel = mapRef?.current?.getView().getZoom() ?? 0;
+        if (selectedFeatureRef.current) {
+          selectedFeatureRef.current.setStyle(null);
+        }
+        if (clusteredFeatures && clusteredFeatures.length > 1) {
+          if (zoomLevel > 22) {
+            const picked = pickNearestSubFeatureFromExpandedCluster(
+              event,
+              mapRef.current,
+              feature
+            );
+
+            if (picked) {
+              const name = picked.get("name");
+              const coords = picked.getGeometry().getCoordinates();
+              const result: any = {
+                name,
+                type: "Point",
+                lat: Math.ceil(coords[1] * 1e3) / 1e3,
+                lon: Math.ceil(coords[0] * 1e3) / 1e3,
+                numPoints: 0,
+                icon: <Point />,
+                ...(picked.getProperties()?.properties && {
+                  showMore: picked.getProperties()?.properties,
+                }),
+              };
+              selectedFeatureRef.current = picked;
+              setSelectedName(name);
+              setPopupContent(result);
+              setPopupVisible(true);
+            }
+            return;
+          }
           const extent = createEmpty();
-          clusteredFeatures.forEach(function (clusteredFeature: any) {
-            extend(extent, clusteredFeature.getGeometry().getExtent());
-          });
+          clusteredFeatures.forEach((cf: any) =>
+            extend(extent, cf.getGeometry().getExtent())
+          );
           const view = mapRef.current?.getView();
           const clusterCenter = getCenter(extent);
-          const zoomLevel = mapRef?.current?.getView().getZoom();
           view?.animate({
             center: clusterCenter,
             duration: 500,
@@ -853,13 +1018,8 @@ export const addMapClickHandler = ({
             mapRef?.current,
             setPopupVisible,
             setPopupContent,
-            // setPopupCoordinate,
-            // setIsChange,
-            sourceServerRef,
             vectorLayerRef,
-            layers,
             setSelectedName,
-            utm,
             selectedFeatureRef
           );
         }
@@ -897,11 +1057,8 @@ const handleMapClick = (
   map: any,
   setPopupVisible: any,
   setPopupContent: any,
-  sourceServerRef: any,
   vectorLayerRef: any,
-  layers: any,
   setSelectedName: any,
-  utm: string,
   selectedFeatureRef: any
 ) => {
   const features: any[] = [];
@@ -914,7 +1071,6 @@ const handleMapClick = (
   const selectedFeature =
     features.find((feature) => feature.getGeometry().getType() === "Point") ||
     features[0];
-
   const geometryType = selectedFeature?.getGeometry()?.getType();
   const name = selectedFeature?.get("name");
 
@@ -932,32 +1088,10 @@ const handleMapClick = (
     vectorLayerRef.current = null;
   }
 
-  const highlightedStyle = new Style({
-    fill: new Fill({
-      color: "rgba(255, 176, 32, 0.5)",
-    }),
-    stroke: new Stroke({
-      color: "#FFB020",
-      width: 3,
-    }),
-    image: new CircleStyle({
-      radius: 7,
-      fill: new Fill({ color: "#FFB020" }),
-      stroke: new Stroke({ color: "black", width: 1 }),
-    }),
-    text: new Text({
-      text: pointName,
-      offsetY: 15,
-      fill: new Fill({ color: "black" }),
-      stroke: new Stroke({ color: "white", width: 3 }),
-    }),
-  });
-
   if (selectedFeature) {
     selectedFeatureRef.current = selectedFeature;
-
-    selectedFeature.setStyle(highlightedStyle);
-
+    selectedFeature.setStyle(highlightedStyleFactory(pointName));
+    const realFeature = selectedFeature.get("features")?.[0] || selectedFeature;
     const geometry = selectedFeature.getGeometry();
     const result: any = {
       name: geometryType === "Point" ? pointName : name,
@@ -966,8 +1100,10 @@ const handleMapClick = (
       lon: 0,
       numPoints: 0,
       icon: null,
+      ...(realFeature.getProperties()?.properties && {
+        showMore: realFeature.getProperties()?.properties,
+      }),
     };
-
     if (geometryType === "Point") {
       const coordinates = geometry.getCoordinates();
       result.lat = Math.ceil(coordinates[1] * 1e3) / 1e3;
@@ -1099,7 +1235,6 @@ function calculateUTMScaleFactor(latitude: number, longitude: number): number {
       (61 - 148 * T + 16 * Math.pow(T, 2)) * (Math.pow(A, 6) / 720));
   return K;
 }
-// get Length
 const formatLength = function (line: any) {
   const length = getLength(line);
   let output;
@@ -1110,6 +1245,25 @@ const formatLength = function (line: any) {
   }
   return output;
 };
+
+// get Length
+export const formatLengthNew = function ({
+  line,
+  utm,
+}: {
+  line: any;
+  utm: string;
+}) {
+  const length = getSphereLength(line, { projection: utm });
+  let output;
+  if (length > 1000) {
+    output = Math.round((length / 1000) * 100) / 100 + " km";
+  } else {
+    output = Math.round(length * 100) / 100 + " m";
+  }
+  return output;
+};
+
 // get Area
 const formatArea = function (polygon: any) {
   const area = getArea(polygon);
@@ -1441,10 +1595,11 @@ export const updateMapLayers = ({
   selectedTileSource,
 }: InitialMApProps) => {
   if (mapRef.current) {
-    mapRef.current.getLayers().clear();
-    mapRef.current.addLayer(tileSources[selectedTileSource]);
+    const layers = mapRef.current.getLayers();
+    layers.setAt(0, tileSources[selectedTileSource]);
   }
 };
+
 // Cleaning function
 export const cleanupMap = (mapRef: MutableRefObject<Map | null>) => {
   if (mapRef.current) {
