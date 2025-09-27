@@ -348,7 +348,7 @@ const MapIconContainer = styled.div<{ open: boolean }>`
 const MapBox = styled.div<{ open: boolean; cursor: string }>`
   position: relative;
   width: 100%;
-  height: calc(100vh - 165px);
+  height: calc(100vh - 0px); 
   overflow: hidden;
   cursor: ${({ cursor }) =>
     cursor === "Circle" ||

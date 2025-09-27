@@ -615,9 +615,6 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
                   setActiveMeature(!activeMeasure);
                 }, 100);
               }}
-              onDoubleClick={() => {
-                console.log("");
-              }}
               style={{
                 background: activeMeasure ? "#66bb6a" : "#fff",
               }}

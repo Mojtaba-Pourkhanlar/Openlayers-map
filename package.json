@@ -1,12 +1,12 @@
 {
-  "name": "rgc-front",
+  "name": "openlayer-mojtaba-pourkhanlar",
   "private": true,
   "version": "1.5.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host",
     "build": "tsc && vite build",
-    "lint": "eslint rgc-front --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint openlayer-mojtaba-pourkhanlar --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview --host",
     "serve": "serve -s -L -n dist",
     "prepare": "husky",

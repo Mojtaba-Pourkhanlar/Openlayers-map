@@ -112,18 +112,12 @@ const EditBax = styled(Box)<{ $isColumn: boolean }>`
 
 const MapContainer = styled(Box)<{ $openJson: boolean }>`
   display: flex;
-  margin-top: 15px;
   overflow: hidden;
-
-  @media (max-width: 910px) {
-    flex-direction: ${({ $openJson }) =>
-      $openJson ? "column-reverse" : "row"};
-  }
 `;
 
 const DivLocation = styled(Box)`
   #current-location-con {
-    position: absolute;
+    position: absolute; 
     bottom: 112px;
     left: 16px;
     z-index: 1;
