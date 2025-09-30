@@ -22,7 +22,7 @@ interface TextInputProps {
 const StyledFormControl = styled(FormControl)`
   position: relative;
   padding: 12px;
-  border-radius: 16px !important;
+  border-radius: 24px !important;
   border: ${({ theme }) => `1px solid ${theme.palette.neutral[500]}`};
   background: ${({ theme }) => theme.palette.secondary[100]};
   color: ${({ theme }) => theme.palette.neutral[600]};

@@ -58,7 +58,6 @@ export function customTileLoadFunction(imageTile: any, src: string) {
 
   img.src = src;
 }
-// url: "http://192.168.23.38:8080/data/openmaptiles/{z}/{x}/{y}.pbf",
 
 const tileSources: any = {
   streets: new TileLayer({

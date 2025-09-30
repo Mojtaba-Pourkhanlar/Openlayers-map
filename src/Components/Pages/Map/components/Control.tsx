@@ -7,6 +7,7 @@ import { ReactComponent as ZoomInIcon } from "@/assets/svg/zoomout.svg";
 // Styles
 import { BoxIconMap, MapIconContainer, Plus } from "../../Style";
 import { Map } from "ol";
+import Tooltip from "@/Components/Common/Core/Tooltip";
 
 interface Reusable {
   mapRef: React.RefObject<Map>;
@@ -61,18 +62,30 @@ const Control = ({ fullScreen, setFullScreen, mapRef }: Reusable) => {
     <>
       <BoxIconMap>
         <MapIconContainer open={fullScreen} onClick={handleRotate}>
-          <RotateIcon />
+          <Tooltip text={"تغییر جهت"} position="left">
+            <RotateIcon />
+          </Tooltip>
         </MapIconContainer>
         <MapIconContainer open={fake} onClick={handleZoomIn}>
-          <ZoomInIcon />
-          <Plus>+</Plus>
+          <Tooltip text={"زوم بیشتر"} position="left">
+            <ZoomInIcon />
+          </Tooltip>
         </MapIconContainer>
         <MapIconContainer open={fake} onClick={handleZoomOut}>
-          <ZoomOutIcon />
-          <Plus>-</Plus>
+          <Tooltip text={"زوم کمتر"} position="left">
+            <ZoomOutIcon />
+          </Tooltip>
         </MapIconContainer>
         <MapIconContainer open={fake} onClick={toggleFullScreen}>
-          {fullScreen ? <FullScreenIcon /> : <CurLocation />}
+          {fullScreen ? (
+            <Tooltip text={"برگشت به حالت پیش فرض"} position="left">
+              <FullScreenIcon />
+            </Tooltip>
+          ) : (
+            <Tooltip text={"تمام صفحه"} position="left">
+              <CurLocation />
+            </Tooltip>
+          )}
         </MapIconContainer>
       </BoxIconMap>
     </>

@@ -111,12 +111,9 @@ export const setHeaderItems = createAction(
 );
 export const clearHeaderItem = createAction("clearHeaderItem");
 // loading
-export const setIsLoading = createAction(
-  "root/setIsLoading",
-  (data: boolean) => {
-    return { payload: data };
-  }
-);
+export const setIsLoading = createAction("root/setIsLoading", (data: boolean) => {
+  return { payload: data };
+});
 // setUploadLoading
 export const setUploadLoading = createAction(
   "setUploadLoading",
@@ -146,13 +143,8 @@ export const nextStep = createAction("nextStep");
 
 // previous Step
 export const previousStep = createAction("previousStep");
-export const resetStep = createAction("resetStep");
 
 // Date
 export const setDate = createAction("setDate", (data: DateProps) => {
-  return { payload: data };
-});
-// set map table type
-export const tableType = createAction("tableType", (data: string) => {
   return { payload: data };
 });

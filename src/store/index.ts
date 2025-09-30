@@ -1,7 +1,7 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 // Redux for components
-import MapReducer from "./Reducers/Map";
 import RootReducer from "./Reducers/Root";
+import MapReducer from "./Reducers/Map";
 
 const reducer = combineReducers({
   root: RootReducer,

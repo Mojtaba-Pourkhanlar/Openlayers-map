@@ -34,13 +34,11 @@ const Lable = styled(Typography)`
   font-size: 14px;
   color: ${({ theme }) => theme.palette.primary[900]};
   margin: 0;
-  font-weight: 600;
 `;
 const Value = styled(Typography)`
   font-size: 14px;
   color: ${({ theme }) => theme.palette.primary[600]};
   margin: 0;
-  font-weight: 600;
 `;
 const BoxItems = styled(Box)`
   margin: 6px 0 0 0;
@@ -48,7 +46,7 @@ const BoxItems = styled(Box)`
   padding: 0px 5px 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   height: 53px;
 `;
 const BoxItemsLable = styled(Box)`
@@ -65,8 +63,6 @@ const BoxHeader = styled(Box)<{ $type: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 5px 10px;
-
   div > svg > path {
     fill: ${({ theme }) => theme.palette.neutral[0]};
   }
@@ -112,65 +108,8 @@ const EditBax = styled(Box)<{ $isColumn: boolean }>`
 
 const MapContainer = styled(Box)<{ $openJson: boolean }>`
   display: flex;
-  overflow: hidden;
-`;
-
-const DivLocation = styled(Box)`
-  #current-location-con {
-    position: absolute; 
-    bottom: 112px;
-    left: 16px;
-    z-index: 1;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: #fff;
-    box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.25);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    & > div > svg {
-      width: 30px;
-      height: 30px;
-      & > path {
-        fill: #0b233f;
-      }
-    }
-
-    & > div {
-      margin: 0 0 0px 0;
-      padding: 0;
-
-      & > span > div > svg {
-        width: 30px;
-        height: 30px;
-        & > path {
-          fill: #0b233f;
-        }
-      }
-    }
-  }
-  #meatrue-con {
-    position: absolute;
-    bottom: 65px;
-    left: 16px;
-    z-index: 1;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: #fff;
-    box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.25);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    & > div {
-      margin: 0 0 -10px 0;
-      padding: 0;
-    }
-  }
+  margin:10px 10px 10px 0 ;
+  overflow-x: hidden;
 `;
 
 export {
@@ -184,5 +123,4 @@ export {
   BoxItemsLable,
   EditBax,
   MapContainer,
-  DivLocation,
 };

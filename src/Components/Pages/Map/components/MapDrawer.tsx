@@ -3,19 +3,15 @@ import React, { useCallback, useEffect, useState } from "react";
 import {
   BoxDrawerActive,
   BoxDrawings,
-  BoxHR,
   DrawerStyle,
-  // ShowAlertStyle,
   ShowItemsStyle,
 } from "../../Style";
-// import { EditBax } from "../Style";
 // Icon
 import { DrawerDataItem } from "@/Interfaces";
 import Arc from "@/assets/png/arcPNG.png";
 import { ReactComponent as Circle } from "@/assets/svg/circle.svg";
-// import { ReactComponent as Delete } from "@/assets/svg/deleteMap.svg";
-// import { ReactComponent as Edit } from "@/assets/svg/editMap.svg";
 import { ReactComponent as Union } from "@/assets/svg/union.svg";
+import Tooltip from "@/Components/Common/Core/Tooltip";
 
 interface Props {
   drawer: string;
@@ -24,9 +20,7 @@ interface Props {
   handleGeometryTypeChange: any;
   drawerData: DrawerDataItem[];
   isEditMode: boolean;
-  handleDeleteSelected: () => void;
   editCoordinates: () => void;
-  isDelete: boolean;
   setState: any;
   setIsEditMode: any;
   openJson: boolean;
@@ -39,9 +33,7 @@ const MapDrawer = ({
   handleGeometryTypeChange,
   drawerData,
   isEditMode,
-  handleDeleteSelected,
   editCoordinates,
-  isDelete,
   setState,
   setIsEditMode,
   openJson,
@@ -64,130 +56,73 @@ const MapDrawer = ({
   }, [isEditMode]);
 
   const renderDrawerButton = useCallback(
-    (type: string, IconComponent: any, additionalStyle = {}) => (
+    (type: string, IconComponent: any, tooltip: string) => (
       <>
-        <BoxDrawerActive
-          $show={drawer === type}
-          onClick={() => {
-            setDrawer(type);
-            editHandler();
-          }}
-          style={{ padding: "3px 5px", ...additionalStyle }}
-        >
-          {IconComponent}
-        </BoxDrawerActive>
-        {type !== "arcThreePoint" && <BoxHR $isColumn={openJson} />}
+        <Tooltip text={tooltip}>
+          <BoxDrawerActive
+            $show={drawer === type}
+            onClick={() => {
+              setDrawer(type);
+              editHandler();
+            }}
+            style={{ padding: "3px 5px" }}
+          >
+            {IconComponent}
+          </BoxDrawerActive>{" "}
+        </Tooltip>
       </>
     ),
     [drawer, setDrawer, editHandler, openJson]
   );
-
+  console.log("drawerData", drawerData);
   return (
     <>
       <DrawerStyle>
         <ShowItemsStyle $isColumn={openJson}>
           <BoxDrawings $isColumn={openJson}>
-            {renderDrawerButton("rectAngle", <Union />)}
-            {renderDrawerButton("circleThreePoint", <Circle />)}
+            {renderDrawerButton("rectAngle", <Union />, "ترسیم مستطیل")}
+            {renderDrawerButton(
+              "circleThreePoint",
+              <Circle />,
+              "ترسیم دایره با سه نقطه"
+            )}
             {renderDrawerButton(
               "arcThreePoint",
-              <img src={Arc} style={{ width: "20px" }} />
+              <img src={Arc} style={{ width: "20px" }} />,
+              "ترسیم نیم دایره با سه نقطه"
             )}
             {drawerData.map((geometryType: DrawerDataItem) => (
               <React.Fragment key={geometryType.name}>
-                <BoxHR $isColumn={openJson} />
-                <BoxDrawerActive
-                  $show={
-                    state.selectedGeometryType === geometryType.name &&
-                    drawer === ""
-                  }
-                  onClick={() =>
-                    handleGeometryTypeChange(
-                      geometryType.name,
-                      setDrawer,
-                      setState,
-                      isEditMode,
-                      setShowAlert
-                    )
-                  }
-                  style={{
-                    padding:
-                      state.selectedGeometryType === "LineString"
-                        ? "3px 6px"
-                        : "",
-                  }}
-                >
-                  {geometryType.icon}
-                </BoxDrawerActive>
+                <Tooltip text={geometryType.tooltip}>
+                  <BoxDrawerActive
+                    $show={
+                      state.selectedGeometryType === geometryType.name &&
+                      drawer === ""
+                    }
+                    onClick={() =>
+                      handleGeometryTypeChange(
+                        geometryType.name,
+                        setDrawer,
+                        setState,
+                        isEditMode,
+                        setShowAlert
+                      )
+                    }
+                    style={{
+                      padding:
+                        state.selectedGeometryType === "LineString"
+                          ? "3px 6px"
+                          : "",
+                    }}
+                  >
+                    {geometryType.icon}
+                  </BoxDrawerActive>{" "}
+                </Tooltip>
               </React.Fragment>
             ))}
           </BoxDrawings>
-
-          {/* <EditBax
-            $isColumn={openJson}
-            onClick={
-              isEditMode && !isDelete
-                ? () => {
-                    setIsEditMode(false);
-                    setShowAlert(false);
-                  }
-                : editCoordinates
-            }
-            style={{
-              backgroundColor: isEditMode && !isDelete ? "#43a047" : undefined,
-            }}
-          >
-            <Edit />
-          </EditBax> */}
-
-          {/* <EditBax
-            $isColumn={openJson}
-            style={{
-              backgroundColor:
-                isEditMode ||
-                state.selectedGeometryType !== "None" ||
-                drawer === "rectAngle" ||
-                drawer === "circleThreePoint" ||
-                drawer === "arcThreePoint"
-                  ? "#ccc"
-                  : "#fff",
-              cursor:
-                isEditMode ||
-                state.selectedGeometryType !== "None" ||
-                drawer === "rectAngle" ||
-                drawer === "circleThreePoint" ||
-                drawer === "arcThreePoint"
-                  ? "not-allowed"
-                  : "pointer",
-            }}
-            onClick={() => {
-              if (
-                isEditMode ||
-                state.selectedGeometryType !== "None" ||
-                drawer === "rectAngle" ||
-                drawer === "circleThreePoint" ||
-                drawer === "arcThreePoint"
-              )
-                return;
-              handleDeleteSelected();
-            }}
-          >
-            <Delete />
-          </EditBax> */}
-
-          {/* <EditBax
-            $isColumn={openJson}
-            style={{
-              backgroundColor: "#0B233F",
-              color: "#fff",
-              fontSize: "12px",
-            }}
-          >
-            ذخیره
-          </EditBax> */}
         </ShowItemsStyle>
       </DrawerStyle>
-      {/* <ShowAlertStyle $show={showAlert}>ویرایش را غیرفعال کنید</ShowAlertStyle> */}
     </>
   );
 };

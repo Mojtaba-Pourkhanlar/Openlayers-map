@@ -14,6 +14,9 @@ import {
   TextLayerStyle,
   TextStyle,
 } from "../../Style";
+import { useDispatch } from "react-redux";
+import { clearDrawnFeatures } from "@/store/Actions/Map";
+import { showData } from "../Hook";
 import { useEffect, useState } from "react";
 
 interface Filter {
@@ -28,6 +31,7 @@ interface Filter {
   drawnFeaturesState: any[];
   setPointData: (getPointData: any) => void;
   utm: any;
+  setIsTest: any;
   sourceDrawnRef: any;
   sourceServerRef: any;
   isEditMode: any;
@@ -39,12 +43,34 @@ const Filter = ({
   setOpen,
   layers,
   setLayers,
+  getPointData,
+  drawnFeaturesState,
+  setPointData,
+  utm,
+  setIsTest,
+  sourceDrawnRef,
+  sourceServerRef,
   isEditMode,
   setOpenSearch,
 }: Filter) => {
   const [openDetail, setOpenDetail] = useState(false);
-
+  // redux
+  const dispatch = useDispatch();
   const handleCheckboxChange = (layerId: number, checked: boolean) => {
+    if (drawnFeaturesState) {
+      const updatedPointData = {
+        features: [...getPointData.features, ...drawnFeaturesState],
+        type: "FeatureCollection",
+      };
+      setPointData(updatedPointData);
+      dispatch(clearDrawnFeatures());
+      setIsTest(true);
+      sourceDrawnRef?.current?.clear();
+      // Add base layer
+      const features = showData(updatedPointData, utm);
+      sourceServerRef.current?.addFeatures(features);
+      setIsTest(false);
+    }
     setLayers((prevLayers: any) =>
       prevLayers.map((layer: any) =>
         layer.id === layerId ? { ...layer, active: checked } : layer
@@ -91,9 +117,9 @@ const Filter = ({
                   <div>{layer.icon}</div>
                   <TextStyle>
                     {layer.name === "LineString"
-                      ? "Line"
+                      ? "Line , MultiLine"
                       : layer.name === "Polygon"
-                      ? "Area"
+                      ? "Polygon"
                       : layer.name}
                   </TextStyle>
                 </BoxName>

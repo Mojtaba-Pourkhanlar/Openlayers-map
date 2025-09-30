@@ -1,8 +1,8 @@
 import Box from "@/Components/Common/Core/Box";
 import { BtnComponent } from "@/Components/Common/Core/Button";
-import Select from "@/Components/Common/Core/Input/Select";
 import TextFaild from "@/Components/Common/Core/Input/TextFaild";
 import Typography from "@/Components/Common/Core/Typography";
+import { selectPoint } from "@/Constants";
 import loc from "@/assets/png/newPoint.png";
 import { ReactComponent as Bottom } from "@/assets/svg/bottom.svg";
 import { ReactComponent as Menu } from "@/assets/svg/menu.svg";
@@ -11,27 +11,18 @@ import CircleStyle from "ol/style/Circle";
 import { styled } from "styled-components";
 
 const BoxTable = styled(Box)`
-  display: flex;
-  margin: -7px 0 0 0;
+  display: block;
   @media (max-width: 1110px) {
-    margin: -17px 0 0 0;
+    display: none !important;
   }
-`;
-const BoxBtnTooltip = styled(Box)`
-  display: flex;
-  align-items: center;
-  margin: 0 10px 14px 0;
-  width: 152px;
-  justify-content: space-between;
 `;
 
 const BoxSM = styled(Box)`
   display: block;
   margin-top: 16px;
-`;
-
-const BoxBTNGroup = styled(Box)`
-  margin: -3px 0 -6px 3px;
+  @media (min-width: 1110px) {
+    display: none !important;
+  }
 `;
 
 const BoxHeader = styled(Box)`
@@ -41,6 +32,7 @@ const BoxHeader = styled(Box)`
 `;
 
 // Openlayers Style:
+
 export const defaultStyle = new Style({
   image: new Icon({
     src: loc,
@@ -57,17 +49,10 @@ export const defaultStyle = new Style({
 });
 
 const pointStyle = new Style({
-  fill: new Fill({
-    color: "rgba(255, 176, 32, 0.5)",
-  }),
-  stroke: new Stroke({
-    color: "#FFB020",
-    width: 3,
-  }),
-  image: new CircleStyle({
-    radius: 7,
-    fill: new Fill({ color: "#FFB020" }),
-    stroke: new Stroke({ color: "black", width: 1 }),
+  image: new Icon({
+    src: selectPoint["point1"],
+    anchor: [0.5, 0.8],
+    width: 14,
   }),
 });
 
@@ -78,27 +63,6 @@ const lineStyle = new Style({
   }),
   fill: new Fill({
     color: "rgba(90, 152, 219, 0.1)",
-  }),
-});
-
-const pointNewStyle = new Style({
-  image: new CircleStyle({
-    radius: 5,
-    stroke: new Stroke({
-      color: "rgba(0, 0, 0)",
-    }),
-    fill: new Fill({
-      color: "rgba(0, 0, 0)",
-    }),
-  }),
-});
-const lineStyleMeasure = new Style({
-  stroke: new Stroke({
-    color: "#dfbe02",
-    width: 2,
-  }),
-  fill: new Fill({
-    color: "#dfbe02",
   }),
 });
 
@@ -118,6 +82,16 @@ const measurelineStyle = new Style({
     fill: new Fill({
       color: "#2094FF",
     }),
+  }),
+});
+
+const lineStyleMeasure = new Style({
+  stroke: new Stroke({
+    color: "#dfbe02",
+    width: 2,
+  }),
+  fill: new Fill({
+    color: "#dfbe02",
   }),
 });
 
@@ -145,25 +119,18 @@ const circleStyleD = new Style({
 const BoxIcon = styled(Box)<{ isbgcolor: string }>`
   background-color: ${({ isbgcolor, theme }) =>
     isbgcolor === "true" ? theme.palette.secondary[300] : "transparent"};
-  padding: 4px 6px;
+  padding: 12px;
   border-radius: 10px;
   cursor: pointer;
   margin-right: 10px;
 `;
-const BaxControl = styled(Box)`
-  display: flex;
-  align-items: center;
-  justify-content: end;
-  flex-direction: row-reverse;
-`;
-
 const BoxLayer = styled(Box)<{ open: boolean }>`
   background-color: ${({ theme }) => theme.palette.neutral[0]};
   color: ${({ theme }) => theme.palette.neutral[900]};
   width: 242px;
-  height: ${({ open }) => (open ? "192px" : "48px")};
-  border-radius: 24px;
-  padding: 12px;
+  height: ${({ open }) => (open ? "192px" : "40px")};
+  border-radius: 16px;
+  padding: 8px 12px 12px;
   transition: height 0.4s ease;
   box-shadow: 0px 4px 13px 0px rgba(0, 0, 0, 0.25);
 
@@ -301,9 +268,9 @@ const BottomIcon = styled(Bottom)`
   }
 `;
 const BoxIconMap = styled(Box)`
-  width: 200px;
-  height: 40px;
-  border-radius: 24px;
+  width: 216px;
+  height: 37px;
+  border-radius: 16px;
   background: ${({ theme }) => theme.palette.neutral[0]};
   box-shadow: 0px 4px 13px 0px rgba(0, 0, 0, 0.25);
   display: flex;
@@ -311,7 +278,7 @@ const BoxIconMap = styled(Box)`
   justify-content: space-between;
   position: absolute;
   bottom: 16px;
-  left: 16px;
+  right: 16px;
   z-index: 100;
   padding: 0 16px;
   cursor: pointer;
@@ -347,8 +314,9 @@ const MapIconContainer = styled.div<{ open: boolean }>`
 
 const MapBox = styled.div<{ open: boolean; cursor: string }>`
   position: relative;
+  border-radius: 15px;
   width: 100%;
-  height: calc(100vh - 0px); 
+  height: calc(100vh - 20px);
   overflow: hidden;
   cursor: ${({ cursor }) =>
     cursor === "Circle" ||
@@ -358,9 +326,7 @@ const MapBox = styled.div<{ open: boolean; cursor: string }>`
     cursor === "circleThreePoint"
       ? "crosshair"
       : ""};
-  canvas {
-    border-radius: 16px;
-  }
+
   .ol-viewport {
     .ol-overlaycontainer-stopevent {
       .ol-control {
@@ -395,10 +361,6 @@ const TableSetting = styled(Box)`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin: -7px 0 0 0;
-  @media (max-width: 1110px) {
-    margin: -17px 0 0 0;
-  }
 `;
 
 const BoxBTN = styled(Box)`
@@ -418,25 +380,13 @@ const BoxBTNSec = styled(Box)`
   }
 `;
 const BoxBTNSecXS = styled(Box)`
-  margin-top: 0;
+  margin-top: 8px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
   @media (min-width: 790px) {
     display: none;
-  }
-`;
-
-const TableSelectSM = styled(Select)`
-  margin: 0;
-  white-space: nowrap;
-  width: 162px !important;
-  @media (max-width: 790px) {
-    width: 97% !important;
-  }
-  @media (max-width: 390px) {
-    font-size: 12px;
   }
 `;
 
@@ -448,16 +398,13 @@ const TableSettingSM = styled(Box)`
   @media (max-width: 790px) {
     flex-direction: column;
   }
-  @media (min-width: 1111px) {
-    display: none;
-  }
 `;
 
 const SearchInput = styled(TextFaild)`
-  margin: 2px 0 -10px 0px;
+  margin: 0 0 0 8px;
   background: ${({ theme }) => theme.palette.neutral[0]};
   border-color: ${({ theme }) => theme.palette.neutral[200]};
-  width: 250px !important;
+  width: 280px !important;
   @media (max-width: 768px) {
     width: 180px !important;
   }
@@ -466,30 +413,13 @@ const SearchInput = styled(TextFaild)`
   }
 `;
 const BTNFilter = styled(BtnComponent)`
-  margin: 0 15px -4px 8px;
+  margin: -7px 15px 0 8px;
   background: ${({ theme }) => theme.palette.secondary[300]};
   color: ${({ theme }) => theme.palette.primary[900]} !important;
   font-size: 14px;
   display: flex;
-  width: 90px !important;
+  width: 100%;
   padding: 0 10px !important;
-  height: 44px !important;
-  p {
-    width: max-content;
-  }
-  @media (max-width: 768px) {
-    margin: -7px 0 0 0px;
-  }
-`;
-const BTNAssessment = styled(BtnComponent)`
-  margin: 0 15px -2px 8px;
-  background: ${({ theme }) => theme.palette.secondary[300]};
-  color: ${({ theme }) => theme.palette.primary[900]} !important;
-  font-size: 14px;
-  display: flex;
-  width: 150px !important;
-  padding: 0 10px !important;
-  height: 48px !important;
   p {
     width: max-content;
   }
@@ -498,13 +428,16 @@ const BTNAssessment = styled(BtnComponent)`
   }
 `;
 const BTNSetting = styled(BtnComponent)`
+  margin-top: -7px;
   background: ${({ theme }) => theme.palette.secondary[300]};
   color: ${({ theme }) => theme.palette.primary[900]} !important;
   font-size: 14px;
-  width: 45px !important;
+  p {
+    width: max-content;
+  }
 `;
 const BTNSettingXS = styled(BtnComponent)`
-  margin-top: 0px;
+  margin-top: -7px;
   background: ${({ theme }) => theme.palette.secondary[300]};
   color: ${({ theme }) => theme.palette.primary[900]} !important;
   padding: 12px 0;
@@ -515,21 +448,6 @@ const BTNSettingXS = styled(BtnComponent)`
   }
 `;
 
-const TableSelect = styled(Select)`
-  margin: 0 8px 0 0;
-  width: 162px !important;
-  white-space: nowrap;
-`;
-const BtnPoint = styled(BtnComponent)`
-  background: ${({ theme }) => theme.palette.secondary[100]};
-  color: ${({ theme }) => theme.palette.neutral[400]} !important;
-  border-radius: 24px;
-  width: 98px !important;
-  height: 32px !important;
-  @media (max-width: 368px) {
-    width: 70px !important;
-  }
-`;
 const BtnPointContainer = styled(Box)`
   margin-top: -18px;
   margin-right: 8px;
@@ -537,17 +455,12 @@ const BtnPointContainer = styled(Box)`
 const NameProject = styled(Box)`
   display: flex;
   align-items: center;
-  background: #deeff7;
-  border-radius: 14px;
-  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.25);
-  padding: 8px 20px;
-  border: 1px solid #ccc;
   @media (max-width: 768px) {
     padding: 25px 0 0 0;
   }
 `;
 const Header = styled(Box)`
-  margin: 15px 0 0;
+  margin-top: 15px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -702,11 +615,11 @@ export const BoxInputContainerSMNEW = styled(Box)`
 const BoxSearch = styled(Box)<{ $show: boolean }>`
   margin-right: 10px;
   z-index: 0;
-  border-radius: 24px;
+  border-radius: 16px;
   background: ${({ theme }) => theme.palette.neutral[0]};
   box-shadow: 0px 4px 13px 0px rgba(0, 0, 0, 0.25);
-  height: 48px;
-  width: 48px;
+  height: 40px;
+  width: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -721,7 +634,7 @@ export const BoxSearchSMNEW = styled(Box)<{ $show: boolean }>`
   left: 10px;
   top: 5px;
   z-index: 10;
-  border-radius: 24px;
+  border-radius: 16px;
   background: ${({ $show, theme }) => ($show ? "" : theme.palette.neutral[0])};
   box-shadow: ${({ $show }) =>
     $show ? "" : "0px 4px 13px 0px rgba(0, 0, 0, 0.25)"};
@@ -742,8 +655,8 @@ const InputTextSearch = styled(Box)<{ $show: boolean }>`
   width: ${({ $show }) => ($show ? "240px" : "0")};
   transition: width 0.5s ease;
   z-index: ${({ $show }) => ($show ? "1" : "0")};
-  border-radius: 24px;
-  height: 48px;
+  border-radius: 16px;
+  height: 40px;
   margin-right: 10px;
 
   @media (max-width: 600px) {
@@ -763,21 +676,21 @@ const InputTextSearch = styled(Box)<{ $show: boolean }>`
 `;
 
 const Input = styled(TextFaild)`
-  height: 48px;
+  height: 40px;
+  width: 90% !important;
   border: none !important;
-  background: ${({ theme }) => theme.palette.neutral[0]};
-  margin-top: -8px;
-  @media (max-width: 600px) {
-    height: 40px;
-  }
+  box-shadow: 0px 4px 13px 0px rgba(0, 0, 0, 0.18) !important;
+  margin: -8px 10px 0 0 !important;
+  border-radius: 16px !important;
+  background: #fff !important;
 `;
 
 const BoxDrawings = styled(Box)<{ $isColumn: boolean }>`
   background: ${({ theme }) => theme.palette.neutral[0]};
   box-shadow: 0px 4px 13px 0px rgba(0, 0, 0, 0.18);
-  width: ${({ $isColumn }) => ($isColumn ? "48px" : "339px")};
-  height: ${({ $isColumn }) => ($isColumn ? "339px" : "48px")};
-  border-radius: 24px;
+  width: ${({ $isColumn }) => ($isColumn ? "40px" : "339px")};
+  height: ${({ $isColumn }) => ($isColumn ? "339px" : "38px")};
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -866,7 +779,7 @@ const BoxShowJson = styled(Box)<{ $isShow: boolean }>`
   width: ${({ $isShow }) => ($isShow ? "370px" : "0px")};
   transition: width 0.3s ease;
   display: flex;
-  height: 74vh;
+  height: calc(100vh - 20px);
   align-items: center;
 
   & > .react-codemirror2 {
@@ -877,8 +790,8 @@ const BoxShowJson = styled(Box)<{ $isShow: boolean }>`
   & > div > div {
     background-color: ${({ theme }) => theme.palette.neutral[0]} !important;
     color: ${({ theme }) => theme.palette.primary[900]} !important;
-    height: calc(100vh - 165px) !important;
-    padding-top: 50px !important;
+    height: calc(100vh - 30px) !important;
+    padding-top: 20px !important;
 
     &
       > .CodeMirror-scroll
@@ -917,22 +830,6 @@ const BoxShowJson = styled(Box)<{ $isShow: boolean }>`
       background-color: ${({ theme }) => theme.palette.neutral[0]} !important;
       color: ${({ theme }) => theme.palette.red.light} !important;
     }
-
-    @media (min-height: 700px) {
-      height: 75vh;
-    }
-    @media (min-height: 750px) {
-      height: 77vh;
-    }
-    @media (min-height: 800px) {
-      height: 78vh;
-    }
-
-    @media (max-height: 910px) {
-      & > .CodeMirror-scroll > .CodeMirror-sizer {
-        width: 700px !important;
-      }
-    }
   }
 
   @media (max-width: 910px) {
@@ -945,9 +842,9 @@ const BoxShowJson = styled(Box)<{ $isShow: boolean }>`
 
 const Copy = styled.div<{ $show: boolean }>`
   position: absolute;
-  top: 20px;
+  top: 10px;
   right: 20px;
-  z-index: 1;
+  z-index: 100;
   background: ${({ theme }) => theme.palette.neutral[0]};
   border-radius: 4px;
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
@@ -982,9 +879,9 @@ const Copy = styled.div<{ $show: boolean }>`
 
 const Download = styled.div<{ $show: boolean }>`
   position: absolute;
-  top: 20px;
+  top: 10px;
   right: 60px;
-  z-index: 1;
+  z-index: 100;
   background: ${({ theme }) => theme.palette.neutral[0]};
   border-radius: 4px;
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
@@ -1034,15 +931,14 @@ const CRNLocation = styled(Box)`
   left: 25px;
   z-index: 1;
   padding: 8px 10px;
-  border-radius: 50%;
+  border-radius: 16px;
   background: #deeff7;
   box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.25);
   cursor: pointer;
-  /* @media (max-width: 910px) {
+  @media (max-width: 910px) {
     bottom: 50px;
     left: 5px;
-  } 
-   */
+  }
 `;
 
 const BoxOpenGeoJson = styled(Box)<{ $isShow: boolean }>`
@@ -1051,10 +947,10 @@ const BoxOpenGeoJson = styled(Box)<{ $isShow: boolean }>`
   justify-content: center;
   padding: 0 5px 5px 0;
   background: ${({ theme }) => theme.palette.neutral[0]};
-  height: 48px;
-  width: 48px;
+  height: 40px;
+  width: 40px;
   box-shadow: 0px 0px 13px 0px rgba(0, 0, 0, 0.25);
-  border-radius: 24px 0 0 24px;
+  border-radius: 16px 0 0 16px;
   cursor: pointer;
   & > svg {
     transform: ${({ $isShow }) =>
@@ -1124,27 +1020,85 @@ const BtnContainer = styled(Box)`
   display: flex;
   align-items: center;
   border: 1px solid #ccc;
-  padding: 8px 0 8px 10px;
+  padding: 8px 0 23px 10px;
   border-radius: 14px;
   background: #fff;
   box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.25);
-  margin-top: 0;
+`;
+
+const DivLocation = styled(Box)`
+  #current-location-con {
+    position: absolute;
+    bottom: 70px;
+    left: 16px;
+    z-index: 1;
+    width: 40px;
+    height: 40px;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & > div > svg {
+      width: 30px;
+      height: 30px;
+      & > path {
+        fill: #0b233f;
+      }
+    }
+
+    & > div {
+      margin: -8px 0 -8px 0;
+      padding: 0;
+
+      & > span > div > svg {
+        width: 30px;
+        height: 30px;
+        & > path {
+          fill: #0b233f;
+        }
+      }
+    }
+  }
+  #meatrue-con {
+    position: absolute;
+    bottom: 15px;
+    left: 16px;
+    z-index: 1;
+    width: 40px;
+    height: 40px;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    & > div {
+      margin: -8px 0 -10px 0;
+      padding: 0;
+    }
+  }
 `;
 
 export {
-  BaxControl,
+  DivLocation,
+  BTNFilter,
+  BTNSetting,
+  BTNSettingXS,
   BottomIcon,
   BoxBTN,
-  BoxBTNGroup,
   BoxBTNSec,
   BoxBTNSecXS,
-  BoxBtnTooltip,
   BoxClose,
   BoxContainer,
   BoxDrawerActive,
   BoxDrawings,
-  BoxHeader,
   BoxHR,
+  BoxHeader,
   BoxIcon,
   BoxIconMap,
   BoxInput,
@@ -1156,53 +1110,45 @@ export {
   BoxLayersSM,
   BoxName,
   BoxOpen,
-  BoxOpenGeoJson,
+  BoxSM,
   BoxSearch,
   BoxSearchMD,
   BoxSearchSM,
-  BoxShowJson,
-  BoxSM,
   BoxTable,
   BoxTextTile,
   BoxTile,
-  BTNAssessment,
-  BtnContainer,
-  BTNFilter,
-  BtnPoint,
   BtnPointContainer,
-  BTNSetting,
-  BTNSettingXS,
-  circleStyleD,
-  Copy,
-  CRNLocation,
-  Customstyle,
-  Download,
   DrawerStyle,
   Header,
   Hr,
   Input,
   InputTextSearch,
   LayerStyle,
-  lineStyle,
-  lineStyleMeasure,
   MapBox,
   MapIconContainer,
-  measurelineStyle,
   MenuIcon,
   NameProject,
   Plus,
-  pointNewStyle,
-  pointStyle,
-  polygonStyle,
   SearchInput,
   ShowAlertStyle,
-  ShowGeoJson,
   ShowItemsStyle,
-  TableSelect,
-  TableSelectSM,
   TableSetting,
   TableSettingSM,
   TextStyle,
   TextTile,
   TileStyle,
+  circleStyleD,
+  lineStyle,
+  pointStyle,
+  polygonStyle,
+  BoxShowJson,
+  ShowGeoJson,
+  BoxOpenGeoJson,
+  Copy,
+  Download,
+  CRNLocation,
+  measurelineStyle,
+  Customstyle,
+  BtnContainer,
+  lineStyleMeasure,
 };

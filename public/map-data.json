@@ -1,436 +1,317 @@
 {
-  "data": [
+  "features": [
     {
-      "id": 1,
-      "UUID": "b531887d-55a2-4c91-aecb-2b031790383a",
-      "fullName": "نوید بیاتانی",
-      "timestamp": "2025-09-24T08:08:15Z",
-      "insertedPercent": 100,
-      "data": {
-        "features": [
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [51.35684955976922, 35.71252546095501]
-            },
-            "properties": {
-              "QRCode": "",
-              "code": "",
-              "customField": null,
-              "description": "",
-              "height": 0,
-              "name": "Point Notes-P1",
-              "qCodeGroup": null,
-              "qcode": 0,
-              "status": "insert",
-              "userId": 7075,
-              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
-              "version": 1
-            }
-          },
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [51.35578757226011, 35.71275834364855]
-            },
-            "properties": {
-              "QRCode": "",
-              "code": "",
-              "customField": null,
-              "description": "",
-              "height": 0,
-              "name": "Point Notes-P2",
-              "qCodeGroup": null,
-              "qcode": 0,
-              "status": "insert",
-              "userId": 7075,
-              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
-              "version": 1
-            }
-          },
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [51.35699222661642, 35.71133527657871]
-            },
-            "properties": {
-              "QRCode": "",
-              "code": "",
-              "customField": null,
-              "description": "",
-              "height": 0,
-              "name": "Point Notes-P3",
-              "qCodeGroup": null,
-              "qcode": 0,
-              "status": "insert",
-              "userId": 7075,
-              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
-              "version": 1
-            }
-          },
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [51.35617262426673, 35.71158938378489]
-            },
-            "properties": {
-              "QRCode": "",
-              "code": "",
-              "customField": null,
-              "description": "",
-              "height": 0,
-              "name": "Point Notes-P4",
-              "qCodeGroup": null,
-              "qcode": 0,
-              "status": "insert",
-              "userId": 7075,
-              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
-              "version": 1
-            }
-          },
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [51.35769068950089, 35.71088670639885]
-            },
-            "properties": {
-              "QRCode": "",
-              "code": "",
-              "customField": null,
-              "description": "",
-              "height": 0,
-              "name": "Point Notes-P5",
-              "qCodeGroup": null,
-              "qcode": 0,
-              "status": "insert",
-              "userId": 7075,
-              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
-              "version": 1
-            }
-          },
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [51.35601018814412, 35.70940519835764]
-            },
-            "properties": {
-              "QRCode": "",
-              "code": "",
-              "customField": null,
-              "description": "",
-              "height": 0,
-              "name": "Point Notes-P6",
-              "qCodeGroup": null,
-              "qcode": 0,
-              "status": "insert",
-              "userId": 7075,
-              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
-              "version": 1
-            }
-          },
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [51.3543828896244, 35.71017707911678]
-            },
-            "properties": {
-              "QRCode": "",
-              "code": "",
-              "customField": null,
-              "description": "",
-              "height": 0,
-              "name": "Point Notes-P7",
-              "qCodeGroup": null,
-              "qcode": 0,
-              "status": "insert",
-              "userId": 7075,
-              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
-              "version": 1
-            }
-          },
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [51.35461462620763, 35.71171633679929]
-            },
-            "properties": {
-              "QRCode": "",
-              "code": "",
-              "customField": null,
-              "description": "",
-              "height": 0,
-              "name": "Point Notes-P8",
-              "qCodeGroup": null,
-              "qcode": 0,
-              "status": "insert",
-              "userId": 7075,
-              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
-              "version": 1
-            }
-          },
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [51.35519259826986, 35.71047322453496]
-            },
-            "properties": {
-              "QRCode": "",
-              "code": "",
-              "customField": null,
-              "description": "",
-              "height": 0,
-              "name": "Point Notes-P9",
-              "qCodeGroup": null,
-              "qcode": 0,
-              "status": "insert",
-              "userId": 7075,
-              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
-              "version": 1
-            }
-          },
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [51.3561661237034, 35.71079643639196]
-            },
-            "properties": {
-              "QRCode": "",
-              "code": "",
-              "customField": null,
-              "description": "",
-              "height": 0,
-              "name": "Point Notes-P10",
-              "qCodeGroup": null,
-              "qcode": 0,
-              "status": "insert",
-              "userId": 7075,
-              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
-              "version": 1
-            }
-          },
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [51.35686402, 35.71252406]
-            },
-            "properties": {
-              "QRCode": "",
-              "code": "",
-              "customField": null,
-              "description": "",
-              "height": 1219.0074462890625,
-              "name": "stk-Point Notes-P1",
-              "qCodeGroup": null,
-              "qcode": 0,
-              "status": "insert",
-              "userId": 7075,
-              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
-              "version": 1
-            }
-          },
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [51.35579609, 35.71273864]
-            },
-            "properties": {
-              "QRCode": "",
-              "code": "",
-              "customField": null,
-              "description": "",
-              "height": 1219.0970458984375,
-              "name": "stk-Point Notes-P2",
-              "qCodeGroup": null,
-              "qcode": 0,
-              "status": "insert",
-              "userId": 7075,
-              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
-              "version": 1
-            }
-          },
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [51.35462804, 35.71169986]
-            },
-            "properties": {
-              "QRCode": "",
-              "code": "",
-              "customField": null,
-              "description": "بین پلاک ۱ و ۳ ، بین ملک دوم و سوم از راست",
-              "height": 1216.0096435546875,
-              "name": "stk-Point Notes-P8",
-              "qCodeGroup": null,
-              "qcode": 0,
-              "status": "insert",
-              "userId": 7075,
-              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
-              "version": 1
-            }
-          },
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [51.3561834, 35.71158807]
-            },
-            "properties": {
-              "QRCode": "",
-              "code": "",
-              "customField": null,
-              "description": "",
-              "height": 1216.2266845703125,
-              "name": "stk-Point Notes-P4",
-              "qCodeGroup": null,
-              "qcode": 0,
-              "status": "insert",
-              "userId": 7075,
-              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
-              "version": 1
-            }
-          },
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [51.3570018, 35.71133173]
-            },
-            "properties": {
-              "QRCode": "",
-              "code": "",
-              "customField": null,
-              "description": "",
-              "height": 1216.089111328125,
-              "name": "stk-Point Notes-P3",
-              "qCodeGroup": null,
-              "qcode": 0,
-              "status": "insert",
-              "userId": 7075,
-              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
-              "version": 1
-            }
-          },
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [51.35770787, 35.71087706]
-            },
-            "properties": {
-              "QRCode": "",
-              "code": "",
-              "customField": null,
-              "description": "",
-              "height": 1217.4228515625,
-              "name": "stk-Point Notes-P5",
-              "qCodeGroup": null,
-              "qcode": 0,
-              "status": "insert",
-              "userId": 7075,
-              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
-              "version": 1
-            }
-          },
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [51.35616352, 35.71079487]
-            },
-            "properties": {
-              "QRCode": "",
-              "code": "",
-              "customField": null,
-              "description": "",
-              "height": 1213.943603515625,
-              "name": "stk-Point Notes-P10",
-              "qCodeGroup": null,
-              "qcode": 0,
-              "status": "insert",
-              "userId": 7075,
-              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
-              "version": 1
-            }
-          },
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [51.35519806, 35.71046912]
-            },
-            "properties": {
-              "QRCode": "",
-              "code": "",
-              "customField": null,
-              "description": "کنار درخت در داخل کوچه بن بست",
-              "height": 1214.330322265625,
-              "name": "stk-Point Notes-P9",
-              "qCodeGroup": null,
-              "qcode": 0,
-              "status": "insert",
-              "userId": 7075,
-              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
-              "version": 1
-            }
-          },
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [51.35602074, 35.70940214]
-            },
-            "properties": {
-              "QRCode": "",
-              "code": "",
-              "customField": null,
-              "description": "",
-              "height": 1210.14599609375,
-              "name": "stk-Point Notes-P6",
-              "qCodeGroup": null,
-              "qcode": 0,
-              "status": "insert",
-              "userId": 7075,
-              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
-              "version": 1
-            }
-          },
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [51.35442919, 35.71009957]
-            },
-            "properties": {
-              "QRCode": "",
-              "code": "",
-              "customField": null,
-              "description": "موقعیت مشکوک",
-              "height": 1211.7884521484375,
-              "name": "stk-Point Notes-P7",
-              "qCodeGroup": null,
-              "qcode": 0,
-              "status": "insert",
-              "userId": 7075,
-              "uuid": "b531887d-55a2-4c91-aecb-2b031790383a",
-              "version": 1
-            }
-          }
-        ],
-        "type": "FeatureCollection"
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [51.35697258, 35.71269155]
+      },
+      "properties": {
+        "QRCode": "",
+        "Q_Code": 0,
+        "age_ray_db": 0,
+        "ant_height_ray_db": 1.7999999523162842,
+        "base_height_ray_db": 0,
+        "base_lat_ray_db": 0,
+        "base_lon_ray_db": 0,
+        "caster_ip_ray_db": "178.252.173.15",
+        "caster_user_ray_db": "0023468742",
+        "class_ray_db": 2,
+        "code": "",
+        "date_ray_db": "2025/09/08 12:52:32",
+        "description": "",
+        "hdop_ray_db": 0.7200000286102295,
+        "head_tilt_ray_db": 244.30288696289062,
+        "height_ray_db": 1241.4246826171875,
+        "hrms_ray_db": 3.1415233612060547,
+        "id_ray_db": 1000000001,
+        "is_tilt_corrected_ray_db": 0,
+        "lat_ray_db": 35.71269155,
+        "logging_mode_ray_db": -1,
+        "lon_ray_db": 51.35697258,
+        "mount_point_ray_db": "",
+        "name": "pnt001",
+        "name_ray_db": "pnt001",
+        "nav_mode_ray_db": 22,
+        "num_sat_tracked_ray_db": 43,
+        "num_sat_used_ray_db": 22,
+        "pdop_ray_db": 1.3300000429153442,
+        "picture": "",
+        "pitch_tilt_ray_db": 0.07194499671459198,
+        "roll_tilt_ray_db": 1.82532799243927,
+        "sigma_ray_db": 1,
+        "tilt_col_point_db": 1.826744794845581,
+        "vdop_ray_db": 0.7200000286102295,
+        "vrms_ray_db": 5.037322998046875
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [51.3569695, 35.7126967] },
+      "properties": {
+        "QRCode": "",
+        "Q_Code": 0,
+        "age_ray_db": 0,
+        "ant_height_ray_db": 1.7999999523162842,
+        "base_height_ray_db": 0,
+        "base_lat_ray_db": 0,
+        "base_lon_ray_db": 0,
+        "caster_ip_ray_db": "178.252.173.15",
+        "caster_user_ray_db": "0023468742",
+        "class_ray_db": 2,
+        "code": "",
+        "date_ray_db": "2025/09/08 12:52:37",
+        "description": "",
+        "hdop_ray_db": 0.7599999904632568,
+        "head_tilt_ray_db": 61.76605224609375,
+        "height_ray_db": 1241.9638671875,
+        "hrms_ray_db": 2.870849132537842,
+        "id_ray_db": 1000000002,
+        "is_tilt_corrected_ray_db": 0,
+        "lat_ray_db": 35.7126967,
+        "logging_mode_ray_db": -1,
+        "lon_ray_db": 51.3569695,
+        "mount_point_ray_db": "",
+        "name": "pnt002",
+        "name_ray_db": "pnt002",
+        "nav_mode_ray_db": 22,
+        "num_sat_tracked_ray_db": 44,
+        "num_sat_used_ray_db": 20,
+        "pdop_ray_db": 1.5199999809265137,
+        "picture": "",
+        "pitch_tilt_ray_db": -5.938330173492432,
+        "roll_tilt_ray_db": 0.5691249966621399,
+        "sigma_ray_db": 1,
+        "tilt_col_point_db": 5.965442657470703,
+        "vdop_ray_db": 0.7599999904632568,
+        "vrms_ray_db": 4.812267780303955
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [51.35696786, 35.71270727]
+      },
+      "properties": {
+        "QRCode": "",
+        "Q_Code": 0,
+        "age_ray_db": 0,
+        "ant_height_ray_db": 1.7999999523162842,
+        "base_height_ray_db": 0,
+        "base_lat_ray_db": 0,
+        "base_lon_ray_db": 0,
+        "caster_ip_ray_db": "178.252.173.15",
+        "caster_user_ray_db": "0023468742",
+        "class_ray_db": 2,
+        "code": "",
+        "date_ray_db": "2025/09/08 12:52:40",
+        "description": "",
+        "hdop_ray_db": 0.8999999761581421,
+        "head_tilt_ray_db": 70.56106567382812,
+        "height_ray_db": 1241.7447509765625,
+        "hrms_ray_db": 3.0131478309631348,
+        "id_ray_db": 1000000003,
+        "is_tilt_corrected_ray_db": 0,
+        "lat_ray_db": 35.71270727,
+        "logging_mode_ray_db": -1,
+        "lon_ray_db": 51.35696786,
+        "mount_point_ray_db": "",
+        "name": "pnt003",
+        "name_ray_db": "pnt003",
+        "nav_mode_ray_db": 22,
+        "num_sat_tracked_ray_db": 42,
+        "num_sat_used_ray_db": 20,
+        "pdop_ray_db": 1.6200000047683716,
+        "picture": "",
+        "pitch_tilt_ray_db": -7.1727399826049805,
+        "roll_tilt_ray_db": 3.96791410446167,
+        "sigma_ray_db": 1,
+        "tilt_col_point_db": 8.1920804977417,
+        "vdop_ray_db": 0.8999999761581421,
+        "vrms_ray_db": 4.884712219238281
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [51.35697823, 35.71268393]
+      },
+      "properties": {
+        "QRCode": "",
+        "Q_Code": 0,
+        "age_ray_db": 0,
+        "ant_height_ray_db": 1.7999999523162842,
+        "base_height_ray_db": 0,
+        "base_lat_ray_db": 0,
+        "base_lon_ray_db": 0,
+        "caster_ip_ray_db": "178.252.173.15",
+        "caster_user_ray_db": "0023468742",
+        "class_ray_db": 2,
+        "code": "",
+        "date_ray_db": "2025/09/08 12:55:27",
+        "description": "",
+        "hdop_ray_db": 0.7200000286102295,
+        "head_tilt_ray_db": 325.99871826171875,
+        "height_ray_db": 1240.8040771484375,
+        "hrms_ray_db": 3.2719528675079346,
+        "id_ray_db": 5294967297,
+        "is_tilt_corrected_ray_db": 0,
+        "lat_ray_db": 35.71268393,
+        "logging_mode_ray_db": -1,
+        "lon_ray_db": 51.35697823,
+        "mount_point_ray_db": "",
+        "name": "pnt001",
+        "name_ray_db": "pnt001",
+        "nav_mode_ray_db": 22,
+        "num_sat_tracked_ray_db": 42,
+        "num_sat_used_ray_db": 22,
+        "pdop_ray_db": 1.1699999570846558,
+        "picture": "",
+        "pitch_tilt_ray_db": -3.351522922515869,
+        "roll_tilt_ray_db": 0.798882007598877,
+        "sigma_ray_db": 1,
+        "tilt_col_point_db": 3.4453141689300537,
+        "vdop_ray_db": 0.7200000286102295,
+        "vrms_ray_db": 4.602284908294678
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [51.35697971, 35.71269027]
+      },
+      "properties": {
+        "QRCode": "",
+        "Q_Code": 0,
+        "age_ray_db": 0,
+        "ant_height_ray_db": 1.7999999523162842,
+        "base_height_ray_db": 0,
+        "base_lat_ray_db": 0,
+        "base_lon_ray_db": 0,
+        "caster_ip_ray_db": "178.252.173.15",
+        "caster_user_ray_db": "0023468742",
+        "class_ray_db": 2,
+        "code": "",
+        "date_ray_db": "2025/09/08 12:55:29",
+        "description": "",
+        "hdop_ray_db": 0.7400000095367432,
+        "head_tilt_ray_db": 240.0027313232422,
+        "height_ray_db": 1240.6146240234375,
+        "hrms_ray_db": 4.635651588439941,
+        "id_ray_db": 5294967298,
+        "is_tilt_corrected_ray_db": 0,
+        "lat_ray_db": 35.71269027,
+        "logging_mode_ray_db": -1,
+        "lon_ray_db": 51.35697971,
+        "mount_point_ray_db": "",
+        "name": "pnt002",
+        "name_ray_db": "pnt002",
+        "nav_mode_ray_db": 22,
+        "num_sat_tracked_ray_db": 42,
+        "num_sat_used_ray_db": 19,
+        "pdop_ray_db": 1.2100000381469727,
+        "picture": "",
+        "pitch_tilt_ray_db": -4.123263835906982,
+        "roll_tilt_ray_db": -1.7009429931640625,
+        "sigma_ray_db": 1,
+        "tilt_col_point_db": 4.459766387939453,
+        "vdop_ray_db": 0.7400000095367432,
+        "vrms_ray_db": 5.969181537628174
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [51.35697441, 35.71270475]
+      },
+      "properties": {
+        "QRCode": "",
+        "Q_Code": 0,
+        "age_ray_db": 0,
+        "ant_height_ray_db": 1.7999999523162842,
+        "base_height_ray_db": 0,
+        "base_lat_ray_db": 0,
+        "base_lon_ray_db": 0,
+        "caster_ip_ray_db": "178.252.173.15",
+        "caster_user_ray_db": "0023468742",
+        "class_ray_db": 2,
+        "code": "",
+        "date_ray_db": "2025/09/08 12:55:32",
+        "description": "",
+        "hdop_ray_db": 0.8299999833106995,
+        "head_tilt_ray_db": 197.20382690429688,
+        "height_ray_db": 1240.714111328125,
+        "hrms_ray_db": 4.098241806030273,
+        "id_ray_db": 5294967299,
+        "is_tilt_corrected_ray_db": 0,
+        "lat_ray_db": 35.71270475,
+        "logging_mode_ray_db": -1,
+        "lon_ray_db": 51.35697441,
+        "mount_point_ray_db": "",
+        "name": "pnt003",
+        "name_ray_db": "pnt003",
+        "nav_mode_ray_db": 22,
+        "num_sat_tracked_ray_db": 41,
+        "num_sat_used_ray_db": 19,
+        "pdop_ray_db": 1.3200000524520874,
+        "picture": "",
+        "pitch_tilt_ray_db": -0.5390639901161194,
+        "roll_tilt_ray_db": 4.959827899932861,
+        "sigma_ray_db": 1,
+        "tilt_col_point_db": 4.988963603973389,
+        "vdop_ray_db": 0.8299999833106995,
+        "vrms_ray_db": 5.373436450958252
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [51.35696385, 35.71271653]
+      },
+      "properties": {
+        "QRCode": "",
+        "Q_Code": 0,
+        "age_ray_db": 0,
+        "ant_height_ray_db": 1.7999999523162842,
+        "base_height_ray_db": 0,
+        "base_lat_ray_db": 0,
+        "base_lon_ray_db": 0,
+        "caster_ip_ray_db": "178.252.173.15",
+        "caster_user_ray_db": "0023468742",
+        "class_ray_db": 2,
+        "code": "",
+        "date_ray_db": "2025/09/08 12:55:34",
+        "description": "",
+        "hdop_ray_db": 0.9300000071525574,
+        "head_tilt_ray_db": 134.06588745117188,
+        "height_ray_db": 1240.4344482421875,
+        "hrms_ray_db": 3.857461929321289,
+        "id_ray_db": 5294967300,
+        "is_tilt_corrected_ray_db": 0,
+        "lat_ray_db": 35.71271653,
+        "logging_mode_ray_db": -1,
+        "lon_ray_db": 51.35696385,
+        "mount_point_ray_db": "",
+        "name": "pnt004",
+        "name_ray_db": "pnt004",
+        "nav_mode_ray_db": 22,
+        "num_sat_tracked_ray_db": 37,
+        "num_sat_used_ray_db": 18,
+        "pdop_ray_db": 1.6799999475479126,
+        "picture": "",
+        "pitch_tilt_ray_db": -6.142815113067627,
+        "roll_tilt_ray_db": -2.3552980422973633,
+        "sigma_ray_db": 1,
+        "tilt_col_point_db": 6.577258586883545,
+        "vdop_ray_db": 0.9300000071525574,
+        "vrms_ray_db": 6.899092674255371
       }
     }
-  ]
+  ],
+  "type": "FeatureCollection"
 }

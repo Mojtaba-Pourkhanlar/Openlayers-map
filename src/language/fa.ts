@@ -5,7 +5,7 @@ export default {
   projects: "پروژه ها",
   download: "دانلود کردن",
   delete: "حذف",
-  uploadFile: "بارگذاری پروژه",
+  uploadFile: "بارگذاری فایل",
   collectiveAction: "عملیات دست جمعی",
   noProject: "پروژه ای وجود ندارد",
   searchProjectName: "جست و جو نام پروژه ...",
@@ -19,12 +19,12 @@ export default {
   isSync: "نوع پروژه",
   size: "حجم",
   epsg: "سیستم مختصات",
-  updatedAt: "آخرین بروزرسانی",
+  updatedAt: "تاریخ بروزرسانی",
   createdAt: "تاریخ ایجاد",
   name: "نام پروژه",
   // Create Project
   statusProject: "وضعیت پروژه",
-  fileName: "نام پروژه",
+  fileName: "نام فایل",
   timeZone: "منطقه زمانی",
   coordinateSystem: "سیستم مختصات",
   newProject: "پروژه جدید",
@@ -141,10 +141,8 @@ export default {
   //....
   createDate: "ایجاد تاریخ",
   permissions: "مدیریت دسترسی",
-  //....
+  //
   pointDetailText: "جزئیات نقطه",
   // Create Project
-  alert:
-    "در صورت لزوم فایل مورد نظر خود را با کلیک روی آپلود فایل بارگذاری کنید ",
-  alert1: "پروژه با موفقیت ایجاد شد،",
+  alert: "درصورت لزوم فایل مورد نظر خود را آپلود کنید ",
 };

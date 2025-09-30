@@ -1,18 +1,19 @@
-import { openSnackbar } from "@/store/Actions/Root";
-import "codemirror/addon/fold/brace-fold"; // Braces folding
-import "codemirror/addon/fold/comment-fold"; // Comment folding
-import "codemirror/addon/fold/foldcode"; // Code folding core
-import "codemirror/addon/fold/foldgutter"; // Enables folding gutter
-import "codemirror/addon/fold/foldgutter.css"; // Style for the gutter
-import "codemirror/lib/codemirror.css";
-import "codemirror/mode/javascript/javascript"; // Ensure JSON mode is included
-import "codemirror/theme/material.css";
-import { useEffect, useRef, useState } from "react";
 import { UnControlled as CodeMirror } from "react-codemirror2";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { BoxShowJson } from "../../../Style";
+import { RootState } from "@/store/interfaces";
+import { useEffect, useRef, useState } from "react";
 import Copy from "./Copy";
 import Download from "./Download";
+import { openSnackbar } from "@/store/Actions/Root";
+import "codemirror/lib/codemirror.css";
+import "codemirror/theme/material.css";
+import "codemirror/mode/javascript/javascript"; // Ensure JSON mode is included
+import "codemirror/addon/fold/foldgutter.css"; // Style for the gutter
+import "codemirror/addon/fold/foldgutter"; // Enables folding gutter
+import "codemirror/addon/fold/foldcode"; // Code folding core
+import "codemirror/addon/fold/brace-fold"; // Braces folding
+import "codemirror/addon/fold/comment-fold"; // Comment folding
 
 const JsonViewer = ({ isShow, jsonData, setPointData, selected }: any) => {
   const dispatch = useDispatch();
@@ -140,32 +141,35 @@ const JsonViewer = ({ isShow, jsonData, setPointData, selected }: any) => {
       onMouseEnter={() => setShowCopy(true)}
       onMouseLeave={() => setShowCopy(false)}
     >
-      {/* استفاده از کامپوننت‌های جدا شده */}
       <Copy jsonData={jsonData} show={showCopy} />
-      <Download jsonData={jsonData} name={"download"} show={showCopy} />
+      <Download
+        jsonData={jsonData}
+        name={"mojtaba-pourkhanlar"}
+        show={showCopy}
+      />
 
       <CodeMirror
         ref={codeMirrorRef}
         value={JSON.stringify(jsonData, null, 2)}
         options={{
           mode: "application/json",
-          theme: "material",
+          theme: "",
           lineNumbers: true,
-          readOnly: false,
+          readOnly: true,
           foldGutter: true, // Enable fold gutter
           gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"], // Add the fold gutter
           foldOptions: {
             widget: "...", // Customize folded content widget (e.g., "..." or custom text)
           },
         }}
-        onChange={(editor, data, value) =>
-          handleEditorChange(editor, data, value)
-        }
+        // onChange={(editor, data, value) =>
+        //   handleEditorChange(editor, data, value)
+        // }
       />
       <style>
         {`
           .highlighted-text {
-            background-color: #ddd;
+            background-color: #b84747;
           }
             
         `}

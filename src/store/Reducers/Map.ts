@@ -4,7 +4,6 @@ import * as actions from "../Actions/Map";
 const initialState = {
   listLoading: false,
   map_list: JSON.parse("[]"),
-  chart_list: JSON.parse("[]"),
   map_page_size: 10,
   map_page_index: 1,
   map_guid: "" as string,
@@ -18,30 +17,10 @@ const initialState = {
   header: null as string[] | null,
   drawnFeaturesState: [] as any[],
   pointDetail: JSON.parse("[]"),
-  map_list_page_size: 10,
-  map_list_page_index: 1,
-  map_list_guid: "" as string,
-  map_list_search: "" as string,
-  map_list_multi: JSON.parse("[]"),
-  map_shape_byID: JSON.parse("[]"),
 };
 
 export default createReducer(initialState, (builder) => {
   builder
-    .addCase(actions.getPointsList.pending, (state) => {
-      state.listLoading = true;
-    })
-    .addCase(actions.getPointsList.fulfilled, (state, action) => {
-      state.map_list = action.payload;
-      state.listLoading = false;
-    })
-    .addCase(actions.getPointsListForChart.pending, (state) => {
-      state.listLoading = true;
-    })
-    .addCase(actions.getPointsListForChart.fulfilled, (state, action) => {
-      state.chart_list = action.payload;
-      state.listLoading = false;
-    })
     .addCase(actions.setMapPageSize.fulfilled, (state, action) => {
       state.map_page_size = action.payload.pageSize;
     })
@@ -89,36 +68,4 @@ export default createReducer(initialState, (builder) => {
     .addCase(actions.clearDrawnFeatures.type, (state) => {
       state.drawnFeaturesState = [];
     })
-    .addCase(actions.getPointsDetail.fulfilled, (state, action) => {
-      state.pointDetail = action.payload;
-    })
-    .addCase(actions.clearPointDetail.type, (state) => {
-      state.pointDetail = [];
-    })
-
-    .addCase(actions.setMultiPageSize, (state, action) => {
-      state.map_list_page_size = action.payload;
-    })
-    .addCase(actions.setMultiPageIndex, (state, action) => {
-      state.map_list_page_index = action.payload;
-    })
-    .addCase(actions.getMultiPointsList.pending, (state) => {
-      state.listLoading = true;
-    })
-    .addCase(actions.getMultiPointsList.fulfilled, (state, action) => {
-      state.map_list_multi = action.payload;
-      state.listLoading = false;
-    })
-    .addCase(actions.setMultiSearch, (state, action) => {
-      state.map_list_search = action.payload;
-    })
-    .addCase(actions.getShapeById.fulfilled, (state, action) => {
-      state.map_shape_byID = action.payload;
-    })
-    .addCase(actions.clearShapeById.type, (state) => {
-      state.map_shape_byID = [];
-    })
-    .addCase(actions.clearMapChart.type, (state) => {
-      state.chart_list = JSON.parse("[]");
-    });
 });

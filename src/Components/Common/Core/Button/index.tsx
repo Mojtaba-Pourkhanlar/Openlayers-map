@@ -52,7 +52,7 @@ export const BtnComponent: React.FC<BtnComponentProps> = ({
     width: "100%",
     height: "48px",
     padding: "12px",
-    borderRadius: "16px",
+    borderRadius: "24px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",

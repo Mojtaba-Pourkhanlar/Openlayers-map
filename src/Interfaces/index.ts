@@ -65,6 +65,7 @@ export interface Toast {
 export interface DrawerDataItem {
   name: string;
   icon: JSX.Element;
+  tooltip: string;
 }
 
 export interface CountersState {
@@ -80,6 +81,7 @@ export type AppDispatch = Dispatch<RootState>;
 
 export type HandleClearCoordinatesFunction = (props: {
   setPopupVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowMeasure: React.Dispatch<React.SetStateAction<boolean>>;
   setDrawnFeatures: React.Dispatch<React.SetStateAction<any[]>>;
   setCounters: React.Dispatch<React.SetStateAction<CountersState>>;
   drawnFeatures: any[];
@@ -93,13 +95,8 @@ export interface HandleMapClickProps {
   mapRef: MutableRefObject<Map | null>;
   setPopupVisible: Dispatch<SetStateAction<boolean>>;
   setPopupContent: Dispatch<SetStateAction<any>>;
-  // setPopupCoordinate: [] | any;
-  // setIsChange: Dispatch<SetStateAction<boolean>>;
-  sourceServerRef: React.RefObject<any>;
   vectorLayerRef: React.RefObject<VectorLayer<any> | null>;
-  layers: any;
   setSelectedName: any;
-  utm: any;
   selectedFeatureRef: any;
 }
 
@@ -114,6 +111,7 @@ export interface InitialMApProps {
 }
 
 export interface UseDrawingArcCircleProps {
+  setActiveMeature: (show: boolean) => void;
   drawer: string;
   setCirclePoints: any;
   setArcPoints: any;
@@ -161,7 +159,6 @@ export interface ProjectColumns {
   hasTransformation: boolean;
   size: number;
   isSync: boolean;
-  modifiedBy: string;
 }
 export interface HistoryColumns {
   rowId: number;
@@ -202,24 +199,4 @@ export interface HistoryColumns {
       type: string;
     };
   };
-}
-
-export interface MultiPointByID {
-  id: number;
-  name: string;
-  lat: number;
-  lon: number;
-  height: number;
-  color: string;
-  lable: string;
-}
-
-export interface MultiPointColumns {
-  idRayDb: number;
-  nameRayDb: string;
-  dateRayDb: string;
-  pointIdsRayDb: string;
-  lineTypeRayDb: number;
-  picture: string;
-  multipointColor: string;
 }

@@ -47,7 +47,6 @@ const initialState = {
     start: "" as string,
     end: "" as string,
   },
-  getTableType: "Point" as string,
 };
 
 export default createReducer(initialState, (builder) => {
@@ -169,14 +168,8 @@ export default createReducer(initialState, (builder) => {
     .addCase(actions.previousStep.type, (state) => {
       state.transferStep -= 1;
     })
-    .addCase(actions.resetStep.type, (state) => {
-      state.transferStep = 1;
-    })
     .addCase(actions.setDate, (state, action) => {
       state.getDate.start = action.payload.start;
       state.getDate.end = action.payload.end;
-    })
-    .addCase(actions.tableType, (state, action) => {
-      state.getTableType = action.payload;
     });
 });

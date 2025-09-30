@@ -14,7 +14,7 @@
 
 :root {
   --font-family-main: "Vazirmatn-Regular", sans-serif; /* Default font */
-  --font-family-secondary: "Vazirmatn-Bold", sans-serif; /* Secondary font */
+  --font-family-secondary: "Vazirmatn-Bold", sans - serif; /* Secondary font */
 }
 
 body {
@@ -33,9 +33,11 @@ html::-webkit-scrollbar-track {
 
 html::-webkit-scrollbar-thumb {
   background: #ffffff;
+  border-radius: 10px;
 }
 html::-webkit-scrollbar-thumb:hover {
   background: #0b233f;
+  border-radius: 10px;
 }
 .loader-Custome {
   width: 25px;

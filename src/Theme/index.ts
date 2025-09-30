@@ -5,7 +5,7 @@ enum Breakpoints {
   sm = 768,
   md = 1024,
   lg = 1200,
-  xl = 1360,
+  xl = 1440,
 }
 
 const theme = {
@@ -64,14 +64,12 @@ const theme = {
   },
   breakpoints: {
     up: (breakpoint: keyof typeof Breakpoints | number) =>
-      `@media (min-width: ${
-        typeof breakpoint === "string"
-          ? Breakpoints[breakpoint] + 1
-          : breakpoint
+      `@media (min-width: ${typeof breakpoint === "string"
+        ? Breakpoints[breakpoint] + 1
+        : breakpoint
       }px)`,
     down: (breakpoint: keyof typeof Breakpoints | number) =>
-      `@media (max-width: ${
-        typeof breakpoint === "string" ? Breakpoints[breakpoint] : breakpoint
+      `@media (max-width: ${typeof breakpoint === "string" ? Breakpoints[breakpoint] : breakpoint
       }px)`,
   },
 };
@@ -100,12 +98,6 @@ const GlobalStyles = createGlobalStyle`
     --font-family-secondary: 'Vazirmatn-Bold', sans - serif; /* Secondary font */
   }
   
-  body {
-    background-color: ${(props) => props.theme.body};
-    color: ${(props) => props.theme.text};
-    /* transition: background-color 0.3s ease-out, color 0.3s ease-out; */
-    // direction:${(props) => props.theme.direction};
-  }
 
 `;
 export type Theme = typeof theme;

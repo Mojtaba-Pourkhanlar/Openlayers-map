@@ -18,6 +18,7 @@ import {
   circleCoordinates,
   formatArea,
   formatLength,
+  formatLengthNew,
   generateUniqueName,
   handleConvertToWGS84Drawer,
   handleModifyEnd,
@@ -28,7 +29,12 @@ import {
   showData,
   styleEx,
 } from ".";
-import { circleStyleD, lineStyleMeasure, pointStyle } from "../../Style";
+import {
+  circleStyleD,
+  lineStyleMeasure,
+  measurelineStyle,
+  pointStyle,
+} from "../../Style";
 import {
   editModeHandlerProps,
   updateArcCircleProps,
@@ -56,7 +62,7 @@ const useUpdateArcCircle = ({
   getPointData,
   setDrawnFeatures,
   setCounters,
-  mapData,
+  drawnFeaturesState,
   dispatch,
   arcPoints,
   utm,
@@ -78,7 +84,7 @@ const useUpdateArcCircle = ({
           getPointData,
           setDrawnFeatures,
           setCounters,
-          mapData,
+          drawnFeaturesState,
           dispatch,
           utm,
           radiusThree
@@ -94,7 +100,7 @@ const useUpdateArcCircle = ({
         getPointData,
         setDrawnFeatures,
         setCounters,
-        mapData,
+        drawnFeaturesState,
         dispatch,
         utm
       );
@@ -106,7 +112,7 @@ const useUpdateArcCircle = ({
 const useDrawing = ({
   sourceDrawnRef,
   mapRef,
-  mapData,
+  drawnFeaturesState,
   getDrawnFeatures,
   dispatch,
   counters,
@@ -118,11 +124,12 @@ const useDrawing = ({
   drawer,
   state,
   styles,
+  setActiveMeature,
   getPointData,
   utm,
   setDrawer,
   selectedCheckboxes,
-  // setShowLayers,
+  setShowLayers,
   getradius,
   test,
 }: any) => {
@@ -258,19 +265,19 @@ const useDrawing = ({
           switch (state.selectedGeometryType) {
             case "Point":
               baseName = "Cloud_P";
-              lineName = mapData?.point;
+              lineName = drawnFeaturesState?.point;
               break;
             case "LineString":
               baseName = "Cloud_Line";
-              lineName = mapData?.line;
+              lineName = drawnFeaturesState?.line;
               break;
             case "Polygon":
               baseName = "Cloud_Polygon";
-              lineName = mapData?.polygon;
+              lineName = drawnFeaturesState?.polygon;
               break;
             case "Circle":
               baseName = "Cloud_Circle";
-              lineName = mapData?.polygon;
+              lineName = drawnFeaturesState?.polygon;
               drawnFeature.setStyle(circleStyleD);
               // Get the circle's center point and radius
               const center = drawnFeature.getGeometry().getCenter();
@@ -287,7 +294,7 @@ const useDrawing = ({
               break;
             default:
               baseName = "Cloud_Default";
-              lineName = mapData?.point;
+              lineName = drawnFeaturesState?.point;
               break;
           }
           let result = generateUniqueName(
@@ -347,12 +354,12 @@ const useDrawing = ({
       // document.removeEventListener("keydown", handleKeyPress);
       const clear = selectedCheckboxes.map((item: any) => item.id);
       dispatch(removeSelectedCheckbox(clear));
-      // setShowLayers(false);
+      setShowLayers(false);
     };
   }, [
     mapRef,
     sourceDrawnRef,
-    mapData,
+    drawnFeaturesState,
     getDrawnFeatures,
     dispatch,
     counters,
@@ -368,14 +375,15 @@ const useDrawing = ({
 const useAddMeasureInteraction = ({
   drawRef,
   mapRef,
-  activeMeasure,
+  activeMeature,
   sourceServerRef,
   snap,
   setSelectedName,
   setState,
+  utm,
 }: any) => {
   useEffect(() => {
-    if (!activeMeasure || !mapRef.current || !sourceServerRef.current) return;
+    if (!activeMeature || !mapRef.current || !sourceServerRef.current) return;
     // Draw Interaction for LineString
     let line: any;
     let label: any;
@@ -392,14 +400,14 @@ const useAddMeasureInteraction = ({
         if (type === "LineString" || type === "Polygon" || type === "Point") {
           if (geometry instanceof LineString) {
             labelPoint = new PointGeom(geometry.getLastCoordinate());
-            label = formatLength(geometry);
+            label = formatLengthNew({ line: geometry, utm });
             line = geometry;
           }
           if (line) {
             let count = 0;
             line.forEachSegment(function (a: any, b: any) {
               const segment = new LineString([a, b]);
-              const label = formatLength(segment);
+              const label = formatLengthNew({ line: segment, utm });
               if (segmentStyles.length - 1 < count) {
                 segmentStyles.push(segmentStyle.clone());
               }
@@ -427,9 +435,6 @@ const useAddMeasureInteraction = ({
     mapRef.current.addInteraction(snap);
     snap.setActive(true);
     drawInteraction.on("drawstart", () => {
-      // if (mapRef.current && drawRef.current) {
-      //   mapRef.current.removeInteraction(drawRef.current);
-      // }
       setSelectedName(null);
       setState((prevState: any) => ({
         ...prevState,
@@ -447,7 +452,7 @@ const useAddMeasureInteraction = ({
       }
       drawRef.current = null;
     };
-  }, [activeMeasure, mapRef, sourceServerRef, drawRef]);
+  }, [activeMeature, mapRef, sourceServerRef, drawRef]);
 };
 
 const showDataP = (pointData: any, utm: any) => {
@@ -475,11 +480,13 @@ const useMapSetup = ({
   getPointData,
   utm,
   layers,
+  selectedTileSource,
   sourceServerRef,
   showCoordinate,
+  isTest,
   isChecked,
-  clusterRef,
   state,
+  clusterRef,
 }: any) => {
   const setupMapLayers = useCallback(() => {
     if (mapRef.current) {
@@ -523,18 +530,17 @@ const useMapSetup = ({
     getPointData,
     utm,
     showCoordinate,
-    state,
   ]);
 
   useEffect(() => {
     setupMapLayers();
-  }, [layers, state, isChecked]);
+  }, [setupMapLayers, layers, selectedTileSource, isTest, isChecked, state]);
 };
 
 const useRectangleDrawing = ({
   sourceDrawnRef,
   mapRef,
-  mapData,
+  drawnFeaturesState,
   counters,
   getPointData,
   dispatch,
@@ -564,7 +570,7 @@ const useRectangleDrawing = ({
     // Create a new snap interaction
     drawInteraction.on("drawend", (event: any) => {
       const drawnFeature = event.feature;
-      const lineName = mapData?.polygon || [];
+      const lineName = drawnFeaturesState?.polygon || [];
       // Generate unique name for the feature
       const resultName = generateUniqueName(
         BASE_NAME,
@@ -606,7 +612,7 @@ const useRectangleDrawing = ({
   }, [
     mapRef,
     sourceDrawnRef,
-    mapData,
+    drawnFeaturesState,
     counters,
     getPointData,
     dispatch,
@@ -634,6 +640,7 @@ const useRectangleDrawing = ({
 };
 
 const useDrawingArcCircle = ({
+  setActiveMeature,
   drawer,
   setCirclePoints,
   setArcPoints,
@@ -670,6 +677,7 @@ const useDrawingArcCircle = ({
   );
   const clickHandler = useCallback(
     (event: any) => {
+      setActiveMeature(false);
       const newPoint = event.coordinate;
       const marker = new Feature({
         geometry: new PointGeom(newPoint),
@@ -711,6 +719,7 @@ const useEditModeHandler = ({
   isEditMode,
   modifyInteraction,
   modifyInteractionDrawer,
+  setActiveMeature,
   setModifyInteraction,
   setModifyInteractionDrawer,
   mapRef,
@@ -727,6 +736,7 @@ const useEditModeHandler = ({
     if (!isEditMode) {
       modifyInteraction?.setActive(false);
       modifyInteractionDrawer?.setActive(false);
+      // setActiveMeature(false);
       setModifyInteraction(null);
       setModifyInteractionDrawer(null);
     }

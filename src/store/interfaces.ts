@@ -43,17 +43,52 @@ export interface RootState {
       start: string;
       end: string;
     };
-    getTableType: string;
+  };
+  project: {
+    listLoading: boolean;
+    project_list: {
+      data: {
+        list: any[];
+        totalCount: number;
+      };
+    };
+    project_page_size: number;
+    project_page_index: number;
+    openproject: any;
+    route: string | null;
+    persistentRoute: boolean;
+    name: string;
+    getGuid: string;
+    id: string | undefined;
+    listUsers: {
+      data: [
+        {
+          ID: number;
+          ProjectID: number;
+          NationalId: string;
+          FullName: string;
+        }
+      ];
+    };
+    newUser: {
+      data: {
+        ID: number;
+        ProjectID: number;
+        NationalId: string;
+        FullName: string;
+      };
+    };
+  };
+  profile: {
+    loading: boolean;
+    signin: any;
+    captcha: any;
+    statusCode: number;
+    user: any;
   };
   map: {
     listLoading: boolean;
     map_list: {
-      data: {
-        list: any[];
-        totalNumber: number;
-      };
-    };
-    chart_list: {
       data: {
         list: any[];
         totalNumber: number;
@@ -73,21 +108,57 @@ export interface RootState {
     drawnFeaturesState: number[][];
     header: [];
     pointDetail: any[];
-    map_list_page_size: number;
-    map_list_page_index: number;
-    map_list_multi: {
+  };
+  history: {
+    historyLoading: boolean;
+    historyList: {
       data: {
-        list: any[];
-        totalNumber: number;
+        list: [];
+        totalCount: number;
       };
     };
-    map_shape_byID: {
-      data: {
-        list: any[];
-        totalNumber: number;
+    pageSize: number;
+    beforeIndex: number;
+    operation: string;
+    featureType: string;
+    isRedirect: boolean;
+    multiPointList: {
+      rowId: number;
+      status: string;
+      feature: {
+        properties: {
+          name: string;
+          fullName: string;
+          createAt: string;
+        };
+        geometry: {
+          coordinates: number[];
+          type: string;
+        };
+      };
+      FeatureAfter: {
+        properties: {
+          name: string;
+          fullName: string;
+          createAt: string;
+        };
+        geometry: {
+          coordinates: number[];
+          type: string;
+        };
+      };
+      featureBefore: {
+        properties: {
+          name: string;
+          fullName: string;
+          createAt: string;
+        };
+        geometry: {
+          coordinates: number[];
+          type: string;
+        };
       };
     };
-    map_list_search: string;
   };
 }
 
@@ -131,13 +202,3 @@ export interface TypeHistory {
 export const initialState: TypeHistory = {
   featureType: "point",
 };
-
-export interface ShapeResponceType {
-  statusCode: number;
-  method: string;
-  message: string;
-  data: {
-    list: any[];
-    totalNumber: number;
-  };
-}

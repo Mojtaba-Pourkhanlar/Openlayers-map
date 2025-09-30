@@ -69,7 +69,7 @@ export const StyledTextInputBox = styled.div<{
   width: 100%;
   height: 48px;
   background: ${({ theme }) => theme.palette.neutral[0]};
-  border-radius: 16px;
+  border-radius: 24px;
   border: 1px solid #a0a0a0;
   ${({ $disabled, theme }) =>
     !$disabled &&

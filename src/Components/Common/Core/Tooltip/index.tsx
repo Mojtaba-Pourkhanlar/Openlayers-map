@@ -1,200 +1,151 @@
-import React, { ReactNode, useEffect, useState } from "react";
-import styled from "styled-components";
-import Typography from "../Typography";
+import React, { useEffect, useState } from "react";
+import styled, { css } from "styled-components";
 
-export interface PropsToltips {
-  name: string;
-  value: "view" | "permissions" | "delete";
-  icon: JSX.Element;
-}
+type Position = "top" | "bottom" | "left" | "right";
 
 interface TooltipProps {
-  children: ReactNode;
-  title: any;
-  hasId: number;
-  onClick?: () => void; // New prop
-  onItemClick?: (item: PropsToltips) => void;
-  tableData: any[];
+  text: string;
+  children: React.ReactNode;
+  position?: Position;
 }
 
-const TooltipWrapper = styled.div`
+const TooltipContainer = styled.div`
   position: relative;
   display: inline-block;
-  cursor: pointer;
 `;
 
-const TooltipContent = styled.div`
-  position: fixed;
-  border-radius: 0px 24px 24px 24px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.12);
-  width: 162px;
-  z-index: 100000000 !important;
-  background: ${({ theme }) => theme.palette.neutral[0]};
+const TooltipContent = styled.div<{ $position: Position }>`
+  position: absolute;
+  background-color: #1f2937;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  z-index: 50;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+  ${({ $position }) => getPositionStyles($position)}
 `;
 
-const MUIBox = styled.div<{ $index: number }>`
-  display: flex;
-  align-items: center;
-  height: 48px;
-  color: ${({ theme }) => theme.palette.neutral[400]};
-  background: ${({ theme }) => theme.palette.neutral[0]};
-  &:nth-child(even) {
-    div > svg {
-      width: 24px;
-      height: 24px;
-      path {
-        fill: ${({ theme }) => theme.palette.neutral[400]};
-        stroke: ${({ theme }) => theme.palette.neutral[400]};
-      }
-    }
-  }
-  &:first-child {
-    border-radius: 0px 24px 0 0;
-  }
-  &:last-child {
-    border-radius: ${({ $index }) =>
-      $index === 1 ? "0px 24px 24px 24px" : "0px 0 24px 24px"};
-  }
-  &:hover {
-    &:nth-child(1) {
-      div > svg > g > path {
-        fill: ${({ theme }) => theme.palette.neutral[900]};
-      }
-    }
-    div > svg {
-      path {
-        fill: ${({ theme }) => theme.palette.neutral[900]};
-      }
-    }
-    &:nth-child(even) {
-      div > svg {
-        path {
-          stroke: ${({ theme }) => theme.palette.neutral[900]};
+const getPositionStyles = (position: Position) => {
+  switch (position) {
+    case "top":
+      return css`
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-bottom: 0.5rem;
+
+        &::before {
+          content: "";
+          position: absolute;
+          top: 100%;
+          left: 50%;
+          transform: translateX(-50%);
+          border-width: 4px;
+          border-style: solid;
+          border-color: #1f2937 transparent transparent transparent;
         }
-      }
-    }
-    color: ${({ theme }) => theme.palette.neutral[900]};
-    background: ${({ theme }) => theme.palette.secondary[100]};
+      `;
+    case "bottom":
+      return css`
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 0.5rem;
+
+        &::before {
+          content: "";
+          position: absolute;
+          bottom: 100%;
+          left: 50%;
+          transform: translateX(-50%);
+          border-width: 4px;
+          border-style: solid;
+          border-color: transparent transparent #1f2937 transparent;
+        }
+      `;
+    case "left":
+      return css`
+        right: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-right: 1rem;
+
+        &::before {
+          content: "";
+          position: absolute;
+          left: 100%;
+          top: 50%;
+          transform: translateY(-50%);
+          border-width: 4px;
+          border-style: solid;
+          border-color: transparent transparent transparent #1f2937;
+        }
+      `;
+    case "right":
+      return css`
+        left: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-left: 1rem;
+
+        &::before {
+          content: "";
+          position: absolute;
+          right: 100%;
+          top: 50%;
+          transform: translateY(-50%);
+          border-width: 4px;
+          border-style: solid;
+          border-color: transparent #1f2937 transparent transparent;
+        }
+      `;
+    default:
+      return "";
   }
-`;
+};
 
-const TextStyle = styled(Typography)`
-  font-size: 14px;
-  margin-top: 17px;
-  font-weight: 400;
-`;
-
-export const Tooltip: React.FC<TooltipProps> = ({
-  onItemClick,
+const Tooltip: React.FC<TooltipProps> = ({
+  text,
   children,
-  tableData,
-  title,
-  onClick,
-  hasId,
+  position = "right",
 }) => {
-  const [isTooltipVisible, setIsTooltipVisible] = useState(false);
-  const [topPosition, setTopPosition] = useState(0);
-  const [leftPosition, setLeftPosition] = useState(0);
-  const [bottomPosition, setBottomPosition] = useState(0);
-
-  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    event.stopPropagation();
-
-    const currentTarget = event.currentTarget;
-
-    if (currentTarget) {
-      setIsTooltipVisible((prevIsTooltipVisible) => !prevIsTooltipVisible);
-
-      const offsetTop = currentTarget.offsetTop - window.scrollY;
-      const offsetBottom = offsetTop + currentTarget.offsetHeight;
-
-      setBottomPosition(() => offsetTop - 78);
-      setTopPosition(() => offsetBottom);
-      setLeftPosition(
-        () =>
-          currentTarget.offsetLeft +
-          window.scrollX +
-          currentTarget.offsetWidth / 2
-      );
-    }
-
-    if (onClick) {
-      onClick();
-    }
-  };
-
-  const handleItemClick = (item: PropsToltips) => {
-    setIsTooltipVisible(false); // Close the tooltip when an item is clicked
-    if (onItemClick) {
-      onItemClick(item);
-    }
-  };
-
-  const handleOutsideClick = (event: MouseEvent) => {
-    const tooltipElement = document.getElementById(`${hasId}`);
-    if (tooltipElement && !tooltipElement.contains(event.target as Node)) {
-      setIsTooltipVisible(false);
-    }
-  };
+  const [isVisible, setIsVisible] = useState(false);
+  const [isLargeScreen, setIsLargeScreen] = useState(true);
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleOutsideClick);
+    const checkScreenSize = () => {
+      setIsLargeScreen(window.innerWidth >= 780);
+    };
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
     return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
+      window.removeEventListener("resize", checkScreenSize);
     };
   }, []);
 
   return (
-    <TooltipWrapper key={hasId} id={`${hasId}`} onClick={handleClick}>
-      {children}
-      {isTooltipVisible && tableData?.length > 10 && (
-        <TooltipContent
-          style={{
-            top: `${
-              tableData[tableData.length - 2].id === hasId ||
-              tableData[tableData.length - 1].id === hasId
-                ? bottomPosition
-                : topPosition
-            }px`,
-            left: `${leftPosition}px`,
-          }}
-        >
-          {title?.map((item: PropsToltips, index: any) => (
-            <MUIBox
-              $index={tableData?.length}
-              key={index}
-              onClick={() => handleItemClick(item)}
-            >
-              <div style={{ width: "24px", height: "24px", margin: "0 12px" }}>
-                {item.icon}
-              </div>
-              <TextStyle>{item.name}</TextStyle>
-            </MUIBox>
-          ))}
-        </TooltipContent>
+    <>
+      {isLargeScreen ? (
+        <TooltipContainer>
+          <span
+            onMouseEnter={() => setIsVisible(true)}
+            onMouseLeave={() => setIsVisible(false)}
+          >
+            {children}
+          </span>
+          {isVisible && (
+            <TooltipContent $position={position}>{text}</TooltipContent>
+          )}
+        </TooltipContainer>
+      ) : (
+        children
       )}
-      {isTooltipVisible && tableData?.length <= 10 && (
-        <TooltipContent
-          style={{ top: `${topPosition}px`, left: `${leftPosition}px` }}
-        >
-          {title?.map((item: PropsToltips, index: any) => {
-            return (
-              <MUIBox
-                $index={title?.length}
-                key={index}
-                onClick={() => handleItemClick(item)}
-              >
-                <div
-                  style={{ width: "24px", height: "24px", margin: "0 12px" }}
-                >
-                  {item.icon}
-                </div>
-                <TextStyle>{item.name}</TextStyle>
-              </MUIBox>
-            );
-          })}
-        </TooltipContent>
-      )}
-    </TooltipWrapper>
+    </>
   );
 };
+
+export default Tooltip;

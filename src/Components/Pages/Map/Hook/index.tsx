@@ -1,7 +1,7 @@
 import { MutableRefObject, useMemo } from "react";
 // Openlayers
 import { Feature, Map, View } from "ol";
-import { ScaleLine } from "ol/control";
+import { ScaleLine, defaults as defaultControls } from "ol/control";
 import { applyTransform, createEmpty, extend, getCenter } from "ol/extent";
 import {
   Circle as CircleGeom,
@@ -50,12 +50,35 @@ import {
   Text,
 } from "ol/style";
 
-import { circleStyleD, defaultStyle, pointNewStyle } from "../../Style";
+import { getLength as getSphereLength } from "ol/sphere";
+import { circleStyleD, defaultStyle, pointStyle } from "../../Style";
 import { tileSources } from "../components/Tiles";
 import { handleDeleteSelectedFeatureProps, modifyEndProps } from "./interface";
 import "./styleTest.css";
-import { getLength as getSphereLength } from "ol/sphere";
 
+export const labelStyleMeasure: any = new Style({
+  text: new Text({
+    font: "14px Calibri,sans-serif",
+    fill: new Fill({
+      color: "rgba(0, 0, 0, 0.7)",
+    }),
+    backgroundFill: new Fill({
+      color: "#e4d233",
+    }),
+    padding: [3, 3, 3, 3],
+    textBaseline: "bottom",
+    offsetY: -15,
+  }),
+  image: new RegularShape({
+    radius: 8,
+    points: 3,
+    angle: Math.PI,
+    displacement: [0, 10],
+    fill: new Fill({
+      color: "#e4d233",
+    }),
+  }),
+});
 export const modifyStyle = new Style({
   image: new CircleStyle({
     radius: 5,
@@ -80,6 +103,23 @@ export const modifyStyle = new Style({
     offsetX: 15,
   }),
 });
+
+export const formatLengthNew = function ({
+  line,
+  utm,
+}: {
+  line: any;
+  utm: string;
+}) {
+  const length = getSphereLength(line, { projection: utm });
+  let output;
+  if (length > 1000) {
+    output = Math.round((length / 1000) * 100) / 100 + " km";
+  } else {
+    output = Math.round(length * 100) / 100 + " m";
+  }
+  return output;
+};
 
 const DEFAULT_RADIUS_PX = 50;
 function makeOffsetGeometryFunction(
@@ -123,7 +163,7 @@ const highlightedStyleFactoryNEW = (
   geomFunc?: (f: any) => any
 ): Style => {
   return new Style({
-    geometry: geomFunc, // اگر تعریف شده باشه جایگزین Geometry اصلی میشه
+    geometry: geomFunc,
     image: new CircleStyle({
       radius: 7,
       fill: new Fill({ color: "#FFB020" }),
@@ -213,8 +253,6 @@ const memoizedStyleFunction = ({
       const layer = layers.find(
         (l: any) => l.name.toLowerCase() === geometryType?.toLowerCase()
       );
-      if (!layer || !layer.active) return [];
-
       if (zoomLevel > 12 && zoomLevel <= 15) {
         clusterRef.current.setDistance(60);
       } else if (zoomLevel > 15 && zoomLevel < 18) {
@@ -224,7 +262,7 @@ const memoizedStyleFunction = ({
       } else if (zoomLevel > 24) {
         clusterRef.current.setDistance(0);
       }
-      // if (!layer || !layer.active) return [];
+      if (!layer || !layer.active) return [];
       if (geometryType === "Point") {
         if (featuresArray && featuresArray.length > 0) {
           if (size === 1) {
@@ -309,13 +347,15 @@ const memoizedStyleFunction = ({
   return showStyle;
 };
 
+//...................................................
 // Show drawings on the map
 const drawerData: DrawerDataItem[] = [
-  { name: "Circle", icon: <Circle /> },
-  { name: "Polygon", icon: <Polygon /> },
-  { name: "LineString", icon: <Line /> },
-  { name: "Point", icon: <Point /> },
-  { name: "None", icon: <Cursor /> },
+  // { name: "Services", icon: <Services /> },
+  { name: "Circle", icon: <Circle /> , tooltip:"ترسیم دایره با شعاع و مرکز"},
+  { name: "Polygon", icon: <Polygon /> , tooltip:"ترسیم چند ضلعی"},
+  { name: "LineString", icon: <Line /> , tooltip:"ترسیم خط"},
+  { name: "Point", icon: <Point /> , tooltip:"ترسیم نقطه"},
+  { name: "None", icon: <Cursor /> , tooltip:"حالت پیش فرض"},
 ];
 // handle open measure popup
 const handleShowMeasurePopup = (
@@ -365,14 +405,13 @@ const generateUniqueName = (
   const see = baseNameExists ? counterNew + counter : counter;
   // Check if the base name already exists, if yes, start from the next number
   while (
-    lineName.includes(`${baseName}${counter.toString().padStart(3, "0")}`)
+    lineName?.includes(`${baseName}${counter.toString().padStart(3, "0")}`)
   ) {
     counter++;
   }
   result = `${baseName}${see.toString().padStart(3, "0")}`;
   return result;
 };
-// Display the data that comes from the backend side
 const showData = (pointData: any, utm: any) => {
   return pointData.features?.reduce((acc: any, featureData: any) => {
     const { geometry, properties } = featureData;
@@ -1091,7 +1130,6 @@ const handleMapClick = (
   if (selectedFeature) {
     selectedFeatureRef.current = selectedFeature;
     selectedFeature.setStyle(highlightedStyleFactory(pointName));
-    const realFeature = selectedFeature.get("features")?.[0] || selectedFeature;
     const geometry = selectedFeature.getGeometry();
     const result: any = {
       name: geometryType === "Point" ? pointName : name,
@@ -1100,9 +1138,6 @@ const handleMapClick = (
       lon: 0,
       numPoints: 0,
       icon: null,
-      ...(realFeature.getProperties()?.properties && {
-        showMore: realFeature.getProperties()?.properties,
-      }),
     };
     if (geometryType === "Point") {
       const coordinates = geometry.getCoordinates();
@@ -1163,7 +1198,7 @@ const convertWGSToUTM = (latitude: any, longitude: any) => {
   }
   return cords;
 };
-// Convert UTM to WGS84 , to get lat and lon. // esting === long
+// Convert UTM to WGS84 , to get lat and lon.
 const convertUTMToWGS = (
   utmEasting: number,
   utmNorthing: number,
@@ -1177,15 +1212,13 @@ const convertUTMToWGS = (
       utmNorthing,
     ]);
     return {
-      latitude: latitude?.toFixed(6),
-      longitude: longitude?.toFixed(6),
+      latitude: latitude,
+      longitude: longitude,
     };
   } catch (error) {
-    console.error("Error converting UTM to WGS:", error);
     return { latitude: null, longitude: null };
   }
 };
-
 // Draw and save the coordinates of the rectangle in the state
 const clickHandlerRectangle = ({
   event,
@@ -1235,6 +1268,7 @@ function calculateUTMScaleFactor(latitude: number, longitude: number): number {
       (61 - 148 * T + 16 * Math.pow(T, 2)) * (Math.pow(A, 6) / 720));
   return K;
 }
+// get Length
 const formatLength = function (line: any) {
   const length = getLength(line);
   let output;
@@ -1245,25 +1279,6 @@ const formatLength = function (line: any) {
   }
   return output;
 };
-
-// get Length
-export const formatLengthNew = function ({
-  line,
-  utm,
-}: {
-  line: any;
-  utm: string;
-}) {
-  const length = getSphereLength(line, { projection: utm });
-  let output;
-  if (length > 1000) {
-    output = Math.round((length / 1000) * 100) / 100 + " km";
-  } else {
-    output = Math.round(length * 100) / 100 + " m";
-  }
-  return output;
-};
-
 // get Area
 const formatArea = function (polygon: any) {
   const area = getArea(polygon);
@@ -1282,7 +1297,7 @@ export const segmentStyle = new Style({
       color: "rgba(255, 255, 255, 1)",
     }),
     backgroundFill: new Fill({
-      color: "rgba(0, 0, 0, 0.7)",
+      color: "rgba(0, 0, 0, 0.4)",
     }),
     padding: [2, 2, 2, 2],
     textBaseline: "bottom",
@@ -1294,7 +1309,7 @@ export const segmentStyle = new Style({
     angle: Math.PI,
     displacement: [0, 8],
     fill: new Fill({
-      color: "rgba(0, 0, 0, 0.7)",
+      color: "rgba(0, 0, 0, 0.4)",
     }),
   }),
 });
@@ -1354,30 +1369,6 @@ export const labelStyle: any = new Style({
     }),
   }),
 });
-export const labelStyleMeasure: any = new Style({
-  text: new Text({
-    font: "14px Calibri,sans-serif",
-    fill: new Fill({
-      color: "rgba(0, 0, 0, 0.7)",
-    }),
-    backgroundFill: new Fill({
-      color: "#e4d233",
-    }),
-    padding: [3, 3, 3, 3],
-    textBaseline: "bottom",
-    offsetY: -15,
-  }),
-  image: new RegularShape({
-    radius: 8,
-    points: 3,
-    angle: Math.PI,
-    displacement: [0, 10],
-    fill: new Fill({
-      color: "#e4d233",
-    }),
-  }),
-});
-
 const handleConvertToWGS84Drawer = ({
   geometryType,
   feature,
@@ -1494,6 +1485,7 @@ const handleModifyEnd = ({
   // Update the state to reflect the changes
   setPointData(updatedPointData);
 };
+
 // handleDeleteSelectedFeature.js
 const handleDeleteSelectedFeature = ({
   selectedFeature,
@@ -1579,7 +1571,7 @@ export const initializeMap = ({
   selectedTileSource,
 }: InitialMApProps) => {
   mapRef.current = new Map({
-    // controls: defaultControls().extend([scaleLineControl]),
+    controls: defaultControls().extend([scaleLineControl]),
     layers: [tileSources[selectedTileSource]],
     target: "map",
     view: new View({
@@ -1595,8 +1587,8 @@ export const updateMapLayers = ({
   selectedTileSource,
 }: InitialMApProps) => {
   if (mapRef.current) {
-    const layers = mapRef.current.getLayers();
-    layers.setAt(0, tileSources[selectedTileSource]);
+    mapRef.current.getLayers().clear();
+    mapRef.current.addLayer(tileSources[selectedTileSource]);
   }
 };
 
@@ -1690,7 +1682,7 @@ export const resetPreviousSelectionStyles = ({
     let styleToSet;
     switch (geometryType) {
       case "Point":
-        styleToSet = pointNewStyle;
+        styleToSet = pointStyle;
         break;
       case "LineString":
         styleToSet = lineStyle;

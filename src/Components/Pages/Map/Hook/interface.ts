@@ -5,7 +5,7 @@ export interface updateArcCircleProps {
   getPointData: { features: any[]; type: string };
   setDrawnFeatures: any;
   setCounters: any;
-  mapData: any;
+  drawnFeaturesState: any;
   dispatch: any;
   arcPoints: any;
   utm: any;
@@ -22,7 +22,7 @@ export interface calculateAndDrawCircleProps {
   getPointData: { features: any[]; type: string };
   setDrawnFeatures: any;
   setCounters: any;
-  mapData: any;
+  drawnFeaturesState: any;
   dispatch: any;
   utm: any;
   radiusThree: any;
@@ -44,6 +44,7 @@ export interface editModeHandlerProps {
   isEditMode: any;
   modifyInteraction: any;
   modifyInteractionDrawer: any;
+  setActiveMeature: any;
   setModifyInteraction: any;
   setModifyInteractionDrawer: any;
   mapRef: any;
@@ -67,7 +68,7 @@ export interface modifyEndProps {
 export interface UseRectangleDrawingProps {
   sourceDrawnRef: React.MutableRefObject<any>;
   mapRef: React.MutableRefObject<any>;
-  mapData: any;
+  drawnFeaturesState: any;
   counters: any;
   getPointData: any;
   dispatch: (action: any) => void;

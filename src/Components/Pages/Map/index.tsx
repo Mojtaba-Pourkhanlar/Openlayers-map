@@ -5,10 +5,11 @@ import { Feature, Map } from "ol";
 import { Draw, Modify, Select, Snap } from "ol/interaction.js";
 import { Cluster, Vector as VectorSource } from "ol/source";
 // Core
+import { Control } from "./components/Control";
 import { Filter } from "./components/Filter";
-// import MapDrawer from "./components/MapDrawer";
+import MapDrawer from "./components/MapDrawer";
 import { Popup } from "./components/Popup";
-import { tileSources } from "./components/Tiles";
+import { ChangeTiles, tileSources } from "./components/Tiles";
 // Redux
 import { clearDrawnFeatures, getDrawnFeatures } from "@/store/Actions/Map";
 // Map Hook
@@ -18,7 +19,6 @@ import {
   clickHandlerRectangle,
   drawerData,
   handleConvertToWGS84Drawer,
-  handleDeleteSelectedFeature,
   handleGeometryTypeChange,
   highlightedStyle,
   initializeMap,
@@ -47,30 +47,34 @@ import { ReactComponent as MeatrueIcon } from "@/assets/svg/mapIcon/meature.svg"
 import { ReactComponent as Point } from "@/assets/svg/point.svg";
 import { ReactComponent as Polygon } from "@/assets/svg/polygon.svg";
 import { ReactComponent as Search } from "@/assets/svg/search.svg";
+import { ReactComponent as Top } from "@/assets/svg/top.svg";
 // Style
 import {
   BoxInputContainer,
   BoxInputContainerSMNEW,
   BoxLayers,
   BoxLayersSM,
+  BoxOpenGeoJson,
   BoxSearch,
   BoxSearchSMNEW,
   CRNLocation,
+  DivLocation,
   Input,
   InputTextSearch,
   LayerStyle,
   MapBox,
+  ShowGeoJson,
 } from "../Style";
-import { DivLocation, MapContainer, styles } from "./Style";
+import { MapContainer, styles } from "./Style";
 import "./components/style.css";
 // Language
-import { getTranslate } from "@/language";
 import VectorLayer from "ol/layer/Vector";
 import { transform } from "ol/proj";
 import "./Hook/styleTest.css";
+import JsonViewer from "./components/JsonViewer/index";
 import "./components/style.css";
-import JsonViewer from "./components/JsonViewer";
-import { Control } from "./components/Control";
+import Tooltip from "@/Components/Common/Core/Tooltip";
+import Box from "@/Components/Common/Core/Box";
 
 const MapComponent = ({ pointData, utm }: MapProps) => {
   // Map Ref
@@ -86,16 +90,18 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
 
   // redux
   const dispatch = useDispatch();
-  const rootState = useSelector((state: RootState) => state?.root);
-  const mapData = useSelector((state: RootState) => state?.map);
-  const { drawnFeaturesState } = mapData;
-  const { selectedCheckboxes } = rootState;
+  const selectedCheckboxes = useSelector(
+    (state: RootState) => state?.root.selectedCheckboxes
+  );
+  const drawnFeaturesState = useSelector(
+    (state: RootState) => state?.map.drawnFeaturesState
+  );
   // All State
   const [selectedTileSource, setSelectedTileSource] = useState("streets");
   const [search, setSearch] = useState<string>("");
   const [drawer, setDrawer] = useState<string>("");
   const [openSearch, setOpenSearch] = useState(false);
-  const [showLayers, setShowLayers] = useState<boolean>(false);
+  const [, setShowLayers] = useState<boolean>(false); // showLayers
   const [fullScreen, setFullScreen] = useState(false);
   const [isChecked] = useState<boolean>(false);
   const [state, setState] = useState<{ selectedGeometryType: string }>({
@@ -119,9 +125,6 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
   const [isDrawing, setIsDrawing] = useState(false);
   // Open Filter
   const [open, setOpen] = useState(false);
-  // Open Custome Style
-  const [isOpen, setIsOpen] = useState(false);
-  const [pointName, setPointName] = useState("point5");
   // Filter Coordinate
   const [layers, setLayers] = useState<MapLayer[]>([
     { icon: <Point />, name: "Point", id: 2, active: true },
@@ -147,16 +150,14 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
     features: any[];
     type: string;
   }>(pointData);
-  // Delete
-  const [isDelete, setIsDelete] = useState<boolean>(false);
+
   const [isTest, setIsTest] = useState<boolean>(false);
   const [getradius, setRadius] = useState<string>("65");
   const [radiusThree, setRadiusThree] = useState<string>("65");
   // change style
-  const [isChange, setIsChange] = useState<boolean>(false);
   const [ShowGeojson, setShowGeojson] = useState<boolean>(false);
-  const [activeMeasure, setActiveMeature] = useState(false);
-
+  const [activeMeature, setActiveMeature] = useState(false);
+  const [getMeasure, setMeasure] = useState<string | null>(null);
   let test = true;
   let draw: Draw | null = sourceDrawnRef?.current;
   let snap: Snap | null = null;
@@ -165,6 +166,7 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
     mapRef,
     selectedName,
     clusterRef,
+    selectedFeatureRef,
   });
 
   useEffect(() => {
@@ -179,13 +181,8 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
       mapRef,
       setPopupVisible,
       setPopupContent,
-      // setPopupCoordinate,
-      // setIsChange,
-      sourceServerRef,
       vectorLayerRef,
-      layers,
       setSelectedName,
-      utm,
       selectedFeatureRef,
     });
     useUTMHandler(utm, mapRef?.current, getPointData?.features, true);
@@ -193,8 +190,17 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
   }, [mapRef, tileSources, selectedTileSource, utm]);
 
   useEffect(() => {
+    if (selectedName === null) {
+      if (selectedFeatureRef.current) {
+        selectedFeatureRef.current.setStyle(null);
+      }
+    }
+  }, [selectedName]);
+
+  useEffect(() => {
     if (!sourceServerRef.current || !clusterRef.current) return;
     const features = showData(getPointData, utm);
+
     const filtered = features.filter((f: any) => {
       const geometryType = f.getGeometry().getType();
       const layer = layers.find(
@@ -202,27 +208,40 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
       );
       return layer?.active;
     });
-    sourceServerRef.current.clear();
-    sourceServerRef.current.addFeatures(filtered);
+
+    const pointFeatures = filtered.filter(
+      (f: any) => f.getGeometry().getType() === "Point"
+    );
+    const otherFeatures = filtered.filter(
+      (f: any) => f.getGeometry().getType() !== "Point"
+    );
+
     const clusterSource = clusterRef.current.getSource();
     clusterSource.clear();
-    clusterSource.addFeatures(filtered);
+    clusterSource.addFeatures(pointFeatures);
+
+    sourceServerRef.current.clear();
+    sourceServerRef.current.addFeatures(otherFeatures);
+
     clusterRef.current.changed();
     vectorLayerRef.current?.changed();
   }, [layers, getPointData, utm]);
 
+  // Reset selected Geometry Type and popup Measure
   useAddMeasureInteraction({
     drawRef,
     mapRef,
-    activeMeasure,
+    activeMeature,
     sourceServerRef,
     snap,
     setSelectedName,
     setState,
+    utm,
   });
 
   // Hook drawing the coordinates of circle، arc and circle 3 point
   useDrawingArcCircle({
+    setActiveMeature,
     drawer,
     setCirclePoints,
     setArcPoints,
@@ -237,9 +256,11 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
   // Disable selected coordinates
   const handleEscape = () => {
     setDrawer("");
+    setMeasure(null);
+    setSelectedName(null);
+    setPopupContent(null);
     setActiveMeature(false);
     setPopupVisible(false);
-    setIsOpen(false);
     setState((prevState: any) => ({
       ...prevState,
       selectedGeometryType: "None",
@@ -252,7 +273,7 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
   useDrawing({
     sourceDrawnRef,
     mapRef,
-    mapData,
+    drawnFeaturesState,
     getDrawnFeatures,
     dispatch,
     counters,
@@ -264,6 +285,7 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
     drawer,
     state,
     styles,
+    setActiveMeature,
     getPointData,
     utm,
     setDrawer,
@@ -280,18 +302,21 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
     getPointData,
     utm,
     layers,
+    selectedTileSource,
     sourceServerRef,
     showCoordinate,
+    isTest,
     isChecked,
-    clusterRef,
     state,
+    drawnFeatures,
+    clusterRef,
   });
 
   // Implementation of Rectangle drawing and naming for each drawing
   useRectangleDrawing({
     sourceDrawnRef,
     mapRef,
-    mapData,
+    drawnFeaturesState,
     counters,
     getPointData,
     dispatch,
@@ -309,7 +334,7 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
     getPointData,
     setDrawnFeatures,
     setCounters,
-    mapData,
+    drawnFeaturesState,
     dispatch,
     arcPoints,
     utm,
@@ -318,11 +343,13 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
     setArcPoints,
     radiusThree,
   });
+
   // Enable coordinate editing
   useEditModeHandler({
     isEditMode,
     modifyInteraction,
     modifyInteractionDrawer,
+    setActiveMeature,
     setModifyInteraction,
     setModifyInteractionDrawer,
     mapRef,
@@ -352,14 +379,12 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
         selectedGeometryType: "None",
       }));
       setDrawer("");
-      setIsDelete(false);
     }
   }, [
     isEditMode,
     state.selectedGeometryType,
     modifyInteraction,
     modifyInteractionDrawer,
-    isDelete,
   ]);
 
   // Implement the deletion function logic
@@ -378,16 +403,6 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
       select.on("select", handleFeatureSelect);
       mapRef?.current?.addInteraction(select);
     }
-    if (isDelete) {
-      modifyInteraction?.setActive(false);
-      modifyInteractionDrawer?.setActive(false);
-      setIsEditMode(false);
-      setState((prevState: any) => ({
-        ...prevState,
-        selectedGeometryType: "None",
-      }));
-      setDrawer("");
-    }
     if (drawnFeaturesState.length !== 0) {
       const updatedPointData = {
         features: [...getPointData.features, ...drawnFeaturesState],
@@ -404,7 +419,6 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
     state.selectedGeometryType,
     modifyInteraction,
     modifyInteractionDrawer,
-    isDelete,
     drawnFeaturesState,
     sourceDrawnRef,
     sourceServerRef,
@@ -486,6 +500,12 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
     }
   };
 
+  // Enable states to start editing coordinates
+  const editCoordinates = () => {
+    setIsEditMode(!isEditMode);
+    setIsTest(false);
+  };
+
   // Reset all statuses after exiting the map
   useEffect(() => {
     return () => {
@@ -516,17 +536,16 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
       setRectAngle([]);
       setIsDrawing(false);
       setOpen(true);
+      setMeasure(null);
+      // setActiveMeature(false);
       setIsEditMode(false);
       setModifyInteraction(null);
       setModifyInteractionDrawer(null);
       setSelectedFeature(null);
-      setSelectedName(null);
       setPointData(pointData?.features);
-      setIsDelete(false);
       setIsTest(false);
       setRadius("65");
       setRadiusThree("65");
-      setIsChange(false);
     };
   }, []);
 
@@ -541,10 +560,10 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
       selectedGeometryType: "None",
     }));
   };
-  
+
   return (
     <>
-      <MapContainer $openJson={false}>
+      <MapContainer $openJson={ShowGeojson}>
         <JsonViewer
           isShow={ShowGeojson}
           jsonData={getPointData}
@@ -568,43 +587,31 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
                   drawnFeaturesState={drawnFeaturesState}
                   setPointData={setPointData}
                   utm={utm}
+                  setIsTest={setIsTest}
                   sourceDrawnRef={sourceDrawnRef}
                   sourceServerRef={sourceServerRef}
                   isEditMode={isEditMode}
                   setOpenSearch={setOpenSearch}
                 />
-                <BoxSearch
-                  $show={openSearch}
-                  onClick={() => setOpenSearch(!openSearch)}
-                >
-                  <Search />
-                </BoxSearch>
-              </BoxLayersSM>
-              <BoxInputContainer>
-                <InputTextSearch $show={openSearch}>
-                  {openSearch && (
+                <Tooltip text={"جست و جو مختصات"}>
+                  <div>
                     <Input
-                      placeholder="جست و جو بر اساس اسم..."
+                      placeholder="جست و جو نام عارضه"
                       type="text"
                       onChange={(e) => handleChange(e)}
                       onKeyDown={(e) => handleSearch(e)}
                       value={search}
+                      icon={
+                        <Box style={{ margin: "0px 0px 8px -6px" }}>
+                          <Search onClick={(e) => handleSearch(e)} />
+                        </Box>
+                      }
                     />
-                  )}
-                </InputTextSearch>
-              </BoxInputContainer>
+                  </div>
+                </Tooltip>
+              </BoxLayersSM>
             </BoxLayers>
           </LayerStyle>
-
-          <BoxSearchSMNEW
-            $show={openSearch}
-            onClick={() => {
-              setOpenSearch(!openSearch);
-              setOpen(false);
-            }}
-          >
-            <Search />
-          </BoxSearchSMNEW>
 
           <BoxInputContainerSMNEW>
             <InputTextSearch $show={openSearch}>
@@ -620,6 +627,29 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
             </InputTextSearch>
           </BoxInputContainerSMNEW>
 
+          <MapDrawer
+            drawer={drawer}
+            setDrawer={setDrawer}
+            state={state}
+            handleGeometryTypeChange={handleGeometryTypeChange}
+            drawerData={drawerData}
+            isEditMode={isEditMode}
+            editCoordinates={editCoordinates}
+            setState={setState}
+            setIsEditMode={setIsEditMode}
+            openJson={ShowGeojson}
+          />
+          <ShowGeoJson>
+            <Tooltip text={!ShowGeojson ? "بازکردن لیست GeoJson" : "بستن لیست"}  position="left">
+              <BoxOpenGeoJson
+                $isShow={ShowGeojson}
+                onClick={() => setShowGeojson(!ShowGeojson)}
+              >
+                <Top style={{ margin: "5px 0 0 8px" }} />
+              </BoxOpenGeoJson>
+            </Tooltip>
+          </ShowGeoJson>
+
           <DivLocation>
             <div
               id="current-location-con"
@@ -633,29 +663,28 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
                 closeHandler();
               }}
             >
-              <div className="current-location">
-                <CurLocation
-                  style={{
-                    padding: "2px",
-                  }}
-                />
-              </div>
+              <Tooltip text={"برگشت به موقعیت اولیه"}>
+                <div className="current-location">
+                  <CurLocation />
+                </div>
+              </Tooltip>
             </div>
-
             <div
               id="meatrue-con"
               onClick={() => {
                 setPopupVisible(false);
                 closeHandler();
                 setTimeout(() => {
-                  setActiveMeature(!activeMeasure);
+                  setActiveMeature(!activeMeature);
                 }, 100);
               }}
               style={{
-                background: activeMeasure ? "#66bb6a" : "#fff",
+                background: activeMeature ? "#66bb6a" : "#fff",
               }}
             >
-              <MeatrueIcon />
+              <Tooltip text={"اندازه گیری"}>
+                <MeatrueIcon />
+              </Tooltip>
             </div>
           </DivLocation>
           <Control
@@ -665,12 +694,39 @@ const MapComponent = ({ pointData, utm }: MapProps) => {
           />
 
           {popupVisible && (
-            <Popup content={popupContent} open={open} utm={utm} />
+            <Popup
+              coordinate={popupCoordinate}
+              content={popupContent}
+              measure={getMeasure}
+              onClose={() => setPopupVisible(false)}
+              open={open}
+              setShowMeasure={setActiveMeature}
+              utm={utm}
+            />
           )}
         </MapBox>
+        <div
+          ref={popupRef}
+          style={{
+            padding: "5px",
+            background: "#fff",
+            borderRadius: "8px 8px 8px 0",
+            pointerEvents: "auto",
+            zIndex: 1,
+            transform: "translate(-80vw, -40vw)",
+          }}
+        />
       </MapContainer>
     </>
   );
 };
 
 export default MapComponent;
+{
+  /* <ChangeTiles
+            showLayers={showLayers}
+            selectedTileSource={selectedTileSource}
+            setShowLayers={setShowLayers}
+            setSelectedTileSource={setSelectedTileSource}
+          /> */
+}
