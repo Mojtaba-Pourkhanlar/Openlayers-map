@@ -10,7 +10,7 @@ const App = () => {
   const theme = customTheme();
   const dispatch = useDispatch();
   const { toastify } = useSelector((state: RootState) => state?.root);
-
+ 
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
